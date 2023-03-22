@@ -1,0 +1,29 @@
+.profile-container {
+    background-color: #f2f2f2;
+    padding: 20px;
+    height: 100%;
+  }
+  
+  .profile-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profile-info {
+    margin-top: 20px;
+  }
+  
+  .profile-field {
+    margin-bottom: 10px;
+  }
+  
+  .profile-label {
+    font-weight: bold;
+  }
+  
+  .profile-value {
+    margin-left: 10px;
+  }
+  
