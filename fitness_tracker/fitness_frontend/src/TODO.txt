@@ -5,7 +5,9 @@ Tickets TODO
 - Food Page and Summary page obtain users info via GET requests 
 - Edit Profile sends changes via POST request 
 - Profile page views information via GET request
-- Convert Table to DYnamic 
+- Convert Table to Dynamic 
+- Fix Form control for the register page for "Slelect Fitnes goasl"
+
 
 Styling: 
 - FIx up profile page look when on laptop

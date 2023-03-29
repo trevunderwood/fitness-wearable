@@ -2,8 +2,19 @@ import React from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import logo from './fitness_tracker_logo.jpg'
+import { useState } from 'react';
 
 function RegisterPage () {
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const isFormComplete = name && email && username && password && confirmPassword;
+
+
     return (
         <div class = "container" style={{padding : '5px 0'}}>
             
@@ -22,33 +33,33 @@ function RegisterPage () {
 
                     <Form.Group controlId="formBasicName" style={{padding: '5px 5px'}} >
                         <Form.Label>Name</Form.Label>
-                        <Form.Control type="name" placeholder="Enter name" style={{width: '80%',  margin: '0 auto'}} required />
+                        <Form.Control type="name" placeholder="Enter name" value={name} onChange={(e) => setName(e.target.value)} style={{width: '80%',  margin: '0 auto'}} required />
                     </Form.Group>
 
 
                     <Form.Group controlId="formBasicEmail" style={{padding: '5px 5px'}} >
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" style={{width: '80%',  margin: '0 auto'}} required />
+                        <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} style={{width: '80%',  margin: '0 auto'}} required />
                     </Form.Group>
 
                     <Form.Group  style={{padding: '5px 5px'}}>
                         <Form.Label>Username</Form.Label>
-                        <Form.Control  placeholder="Username" style={{width: '80%',  margin: '0 auto'}} required />
+                        <Form.Control  placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} style={{width: '80%',  margin: '0 auto'}} required />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword" style={{padding: '5px 5px'}}>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" style={{width: '80%',  margin: '0 auto'}} required/>
+                        <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} style={{width: '80%',  margin: '0 auto'}} required/>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword" style={{padding: '5px 5px'}}>
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type="password" placeholder="Cofirm Password" style={{width: '80%',  margin: '0 auto'}} required/>
+                        <Form.Control type="password" placeholder="Cofirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} style={{width: '80%',  margin: '0 auto'}} required/>
                     </Form.Group>
 
                     <div className="container" style={{padding: '5px 5px'}} >
-                        <Link to = "/personal-register"> 
-                            <Button variant="primary" type="submit" style={{backgroundColor: '#05386B', color: '#8ee4af', fontWeight: 'bold', width: '55%'}}>
+                        <Link to={isFormComplete ? '/personal-register' : '#'}> 
+                            <Button variant="primary" type="submit" disabled={!isFormComplete} style={{backgroundColor: '#05386B', color: '#8ee4af', fontWeight: 'bold', width: '55%'}}>
                                 Continue
                             </Button>
                         </Link>
