@@ -1,0 +1,10 @@
+.profile-card h3 {
+    color: #05386B;
+}
+.profile-card p{
+    color: gray;
+    font-size: 20px;
+}
+.profile-card {
+    padding: 5px;
+}

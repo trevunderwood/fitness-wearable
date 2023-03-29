@@ -19,24 +19,31 @@ function RegisterPage () {
 
                     <h1 style={{fontWeight: 'bold', color: '#05386B'}}> Fitness Tracker </h1>
                     <Form >
+
+                    <Form.Group controlId="formBasicName" style={{padding: '5px 5px'}} >
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="name" placeholder="Enter name" style={{width: '80%',  margin: '0 auto'}} required />
+                    </Form.Group>
+
+
                     <Form.Group controlId="formBasicEmail" style={{padding: '5px 5px'}} >
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" style={{width: '80%',  margin: '0 auto'}} />
+                        <Form.Control type="email" placeholder="Enter email" style={{width: '80%',  margin: '0 auto'}} required />
                     </Form.Group>
 
                     <Form.Group  style={{padding: '5px 5px'}}>
                         <Form.Label>Username</Form.Label>
-                        <Form.Control  placeholder="Username" style={{width: '80%',  margin: '0 auto'}} />
+                        <Form.Control  placeholder="Username" style={{width: '80%',  margin: '0 auto'}} required />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword" style={{padding: '5px 5px'}}>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" style={{width: '80%',  margin: '0 auto'}}/>
+                        <Form.Control type="password" placeholder="Password" style={{width: '80%',  margin: '0 auto'}} required/>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword" style={{padding: '5px 5px'}}>
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type="password" placeholder="Cofirm Password" style={{width: '80%',  margin: '0 auto'}}/>
+                        <Form.Control type="password" placeholder="Cofirm Password" style={{width: '80%',  margin: '0 auto'}} required/>
                     </Form.Group>
 
                     <div className="container" style={{padding: '5px 5px'}} >

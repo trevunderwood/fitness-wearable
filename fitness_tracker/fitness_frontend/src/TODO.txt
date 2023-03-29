@@ -1,0 +1,14 @@
+Tickets TODO 
+- Sign IN Page/ Register Page dont allow continue until form is filled output 
+- Register Page sends POST request to DB to register user 
+- Sign In page confirms user via GET request 
+- Food Page and Summary page obtain users info via GET requests 
+- Edit Profile sends changes via POST request 
+- Profile page views information via GET request
+- Convert Table to DYnamic 
+
+Styling: 
+- FIx up profile page look when on laptop
+- Fix up navigation bar spacing 
+- Fix up padding for buttons in both profile and Food
+

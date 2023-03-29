@@ -2,7 +2,8 @@ import UserNavBar from "../../components/UserNavBar";
 import { Table } from 'react-bootstrap';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { useState } from 'react';
-import './styles/historystyles.css'
+import './styles/historystyles.css';
+
 
 
 function HistoryPage () {

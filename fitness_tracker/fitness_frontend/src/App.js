@@ -8,6 +8,7 @@ import FoodPage from './pages/UserPages/FoodPage';
 import ProfilePage from './pages/UserPages/ProfilePage';
 import HistoryPage from './pages/UserPages/HIstoryPage';
 import PersonalRegisterPage from './pages/PersonalRegisterPage';
+import EditProfilePage from './pages/UserPages/EditProfilePage';
 
 
 
@@ -30,6 +31,7 @@ function App() {
             <Route path ="/food" element={<FoodPage/>}></Route>
             <Route path ="/profile" element={<ProfilePage/>}></Route>
             <Route path ="/history" element={<HistoryPage/>}></Route>
+            <Route path ="/edit-profile" element={<EditProfilePage/>}></Route>
             
 
         </Routes>

@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import logo from './fitness_tracker_logo.jpg'
 
+
+// This is the sign in page
 function SignPage() {
     return (
         <div class = "container" style={{padding : '5px 0'}}>
