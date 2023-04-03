@@ -1,0 +1,10 @@
+.food-container h3{
+    color: #05386B;
+}
+.food-container p{
+    color: gray;
+    font-size: 20px;
+}
+.food-container {
+    padding: 5px;
+}

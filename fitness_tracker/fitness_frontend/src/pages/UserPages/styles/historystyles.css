@@ -1,0 +1,23 @@
+.button-container .btn-primary {
+    background-color: #05386B !important;
+    border-color: #05386B important;
+  }
+  
+  .button-container .btn-secondary {
+    background-color: #8ee4af !important;
+    border-color: #8ee4af !important;
+  }
+  
+  .button-container .btn-primary.active {
+    background-color: #05386B !important;
+    border-color: #05386B !important;
+  }
+  
+  .button-container .btn-secondary.active {
+    background-color: #8ee4af !important;
+    border-color: #8ee4af !important;
+  }
+  
+  .button-container {
+    color: black;
+  }
