@@ -3,6 +3,13 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import logo from './fitness_tracker_logo.jpg'
 import { useState } from 'react';
+import FitnessGoalsDropdown from '../components/FitnessGoalsDropdown';
+import {auth, firestore} from "../firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function RegisterPage () {
 
@@ -10,10 +17,41 @@ function RegisterPage () {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [gender, setGender] = useState('');
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const navigate = useNavigate();
 
-    const isFormComplete = name && email && username && password && confirmPassword;
+    const isFormComplete = name && email && username && password && dateOfBirth && gender && height && weight;
 
+
+const handleRegister = async (e) => {
+    e.preventDefault();
+    if (isFormComplete) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        // Save user data to Firestore
+        const userRef = doc(collection(firestore, "users"), user.uid);
+        await setDoc(userRef, {
+          name,
+          username,
+          email,
+          dateOfBirth,
+          gender,
+          height,
+          weight,
+        });
+        // Redirect to user home
+        navigate('/user-home');
+      } catch (error) {
+        console.error("Error registering user:", error.message);
+      }
+    }
+};
+
+      
 
     return (
         <div class = "container" style={{padding : '5px 0'}}>
@@ -52,15 +90,38 @@ function RegisterPage () {
                         <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} style={{width: '80%',  margin: '0 auto'}} required/>
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicPassword" style={{padding: '5px 5px'}}>
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type="password" placeholder="Cofirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} style={{width: '80%',  margin: '0 auto'}} required/>
+                    <Form.Group controlId="formBasicEmail" style={{padding: '5px 5px'}} >
+                        <Form.Label>Date of Birth</Form.Label>
+                        <Form.Control type="date" placeholder="Date of Birth" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} style={{ width: '80%', margin: '0 auto' }} />
                     </Form.Group>
 
+                    <Form.Group style={{padding: '5px 5px'}}>
+                        <Form.Label>Gender</Form.Label>
+                        <Form.Control as="select" value={gender} onChange={(e) => setGender(e.target.value)} style={{width: '80%', margin: '0 auto', borderRadius: '0'}}>
+                            <option value="">Choose gender...</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicHeight" style={{padding: '5px 5px'}}>
+                        <Form.Label>Height (inches)</Form.Label>
+                        <Form.Control type="number" min="1" max="120" placeholder="Height" value={height} onChange={(e) => setHeight(e.target.value)} style={{width: '80%',  margin: '0 auto'}}/>
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicWeight" style={{padding: '5px 5px'}}>
+                        <Form.Label>Weight (lbs)</Form.Label>
+                        <Form.Control type="number" placeholder="Weight" value={weight} onChange={(e) => setWeight(e.target.value)} style={{width: '80%',  margin: '0 auto'}}/>
+                    </Form.Group>
+
+                    
+
+
+                
                     <div className="container" style={{padding: '5px 5px'}} >
-                        <Link to={isFormComplete ? '/personal-register' : '#'}> 
-                            <Button variant="primary" type="submit" disabled={!isFormComplete} style={{backgroundColor: '#05386B', color: '#8ee4af', fontWeight: 'bold', width: '55%'}}>
-                                Continue
+                        <Link to= '/user-home'> 
+                            <Button variant="primary" type="submit" onClick={handleRegister} style={{backgroundColor: '#05386B', color: '#8ee4af', fontWeight: 'bold', width: '55%'}}>
+                                Register
                             </Button>
                         </Link>
                         

@@ -8,21 +8,53 @@ import {Form} from 'react-bootstrap';
 function FoodPage () {
     const calorieGoal = 2000;
     const [currentCalories, setCurrentCalories] = useState(0);
-    const [caloriesToAdd, setCaloriesToAdd] = useState('');
+    // const [caloriesToAdd, setCaloriesToAdd] = useState('');
+    const [foodName, setFoodName] = useState('');
 
     const resetCalories = () => {
       setCurrentCalories(0);
     };
 
-    const addCalories = () => {
-        setCurrentCalories(currentCalories + caloriesToAdd);
-        setCaloriesToAdd('');
+
+      const fetchCalories = async (food) => {
+        try {
+          const response = await fetch('http://127.0.0.1:8000/api/test-api/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ food }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            return data.result;
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (error) {
+          console.error('Error fetching calories:', error);
+          alert(error);
+        }
+      };
+
+      const addCalories = async () => {
+        const foodResponse = await fetchCalories(foodName);
+
+        console.log(foodResponse.nutrient_name.indexOf("Energy"));
+          
+        const caloriesToAdd = foodResponse.val[foodResponse.nutrient_name.indexOf("Energy")];
+
+        if (caloriesToAdd) {
+          setCurrentCalories(currentCalories + caloriesToAdd);
+          setFoodName('');
+        }
       };
     
       const handleInputChange = (event) => {
-        setCaloriesToAdd(Number(event.target.value));
+        setFoodName(event.target.value);
       };
-
 
     return (
         <><UserNavBar></UserNavBar>
@@ -50,7 +82,7 @@ function FoodPage () {
 
                             <div className="food-container" >
                                 <h3>Log Calories </h3>
-                                <Form.Control type="number" placeholder="Calories to Add" value={caloriesToAdd} onChange={handleInputChange} style={{width: '80%',  margin: '0 auto'}}/>
+                                <Form.Control type="text" placeholder="Name of Food Item" value={foodName} onChange={handleInputChange} style={{width: '80%',  margin: '0 auto'}}/>
                                 <button type="button" class="btn btn-secondary" onClick={addCalories}>Add Calories</button>
                             </div>
 

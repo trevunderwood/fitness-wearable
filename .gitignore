@@ -1,0 +1,5 @@
+# Ignore the virtual environment folder
+env/
+
+# Ignore the Node.js dependencies folder (if using frontend tools like npm)
+node_modules/
