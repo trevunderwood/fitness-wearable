@@ -24,7 +24,7 @@ database=firebase.database()
 
 def get_calorie_intake(food_name):
     nutrients = {'nutrient_id': [], 'nutrient_name': [], 'unit_name' : [], 'val' : []}
-    response = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=98oneQ37kG8dCa6r0rZcTKhi7hwnEgH9gYWAJMkc&query={}".format(food_name))
+    response = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=98oneQ37kG8dCa6r0rZcTKhi7hwnEgH9gYWAJMkc&query={}".format(food_name), verify = False)
     json_object = json.loads(response.text)
 
     json_formatted_str = json.dumps(json_object, indent=2)

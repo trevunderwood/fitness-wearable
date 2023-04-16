@@ -55,7 +55,8 @@ def testAPI(request):
 	health = Health.objects.all()
 	serializer = TrackerSerializer(health, many=True)
 	return Response(serializer.data)
-
+#Send a JSON that has the name of a food
+#Recieiving a JSON response that returns all the value
 @api_view(['POST'])
 def test_tracker(request):
     food = request.data.get('food')

@@ -9,5 +9,5 @@ urlpatterns = [
 
 	# path('task-update/<str:pk>/', views.taskUpdate, name="task-update"),
 	# path('task-delete/<str:pk>/', views.taskDelete, name="task-delete"),
-	path('test-api/', views.testAPI, name="test-api")
+	path('test-api/', views.test_tracker, name="test-api")
 ]
