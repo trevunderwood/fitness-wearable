@@ -4,7 +4,10 @@ import {Link} from 'react-router-dom';
 import fit_logo from './trans_fitness_tracker_logo.png';
 import HomeNavBar from '../components/HomeNavBar';
 
+
 function HomePage() {
+    
+    
     return (
         <><HomeNavBar /><>
         <div style={{ textAlign: 'center', backgroundColor: '#05386B', width: '100%', height: '89vh' }}>
