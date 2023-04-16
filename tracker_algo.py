@@ -22,9 +22,11 @@ authe = firebase.auth()
 database=firebase.database()
 
 
+
 def get_calorie_intake(food_name):
     nutrients = {'nutrient_id': [], 'nutrient_name': [], 'unit_name' : [], 'val' : []}
-    response = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=98oneQ37kG8dCa6r0rZcTKhi7hwnEgH9gYWAJMkc&query={}".format(food_name), verify = False)
+    
+    response = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=98oneQ37kG8dCa6r0rZcTKhi7hwnEgH9gYWAJMkc&query={}".format(food_name), verify=False)
     json_object = json.loads(response.text)
 
     json_formatted_str = json.dumps(json_object, indent=2)
@@ -61,14 +63,147 @@ def calc_calories(time, activity, weight):
     return (time * MET_val * 3.5 * weight) / 200
 
 def recommend_food(UserID):
-    name = database.child(UserID).child('FirstName').get().val()
-    #database.child(UserID).child('FirstName').update()
-    return name
+    #name = database.child(UserID).child('FirstName').get().val()
+    insufficient_nutrient_list = []
+    weight = database.child(UserID).child('Weight').get().val()
+    daily_cal_goal = database.child(UserID).child('DailyCalorieGoal').get().val()
+    recommended_nutrient_values_male = {
+        '1003':0.36*weight,
+        '1004':0.2*daily_cal_goal,
+        '1005':0.45*daily_cal_goal,
+        '1008':daily_cal_goal,
+        '1104':900,
+        '1162':90,
+        '1114':600,
+        '1109':15,
+        '1185':120,
+        '1165':1.2,
+        '1166':1.3,
+        '1167':16,
+        '1170':5,
+        '1175':1.3,
+        '1176':30,
+        '1177':400,
+        '1178':1.2,
+        '1087':1000,
+        '1095':11,
+        '1091':800,
+        '1100':140,
+        '1090':250,
+        '1103':40,
+        '1093':500,
+        '1101':2.3,
+        '1098':900,
+        '1092':1800,
+        '1089':8.7,
+        '1079':25,
+        '2000':36
+    }
+    recommended_nutrient_values_female = {
+        '1003':0.36*weight,
+        '1004':0.2*daily_cal_goal,
+        '1005':0.45*daily_cal_goal,
+        '1008':daily_cal_goal,
+        '1104':700,
+        '1162':75,
+        '1114':600,
+        '1109':15,
+        '1185':90,
+        '1165':1.1,
+        '1166':1.1,
+        '1167':14,
+        '1170':5,
+        '1175':1.3,
+        '1176':30,
+        '1177':400,
+        '1178':1.2,
+        '1087':1000,
+        '1095':9,
+        '1091':800,
+        '1100':140,
+        '1090':250,
+        '1103':40,
+        '1093':500,
+        '1101':1.8,
+        '1098':900,
+        '1092':1800,
+        '1089':14.8,
+        '1079':25,
+        '2000':24
+    }
+    nutrients = database.child(UserID).child('Nutrients').get().val()
+    sex = database.child(UserID).child("Sex").get().val()
 
-#nutrient_bacon = get_calorie_intake("Bacon")
+    if sex == "Male":
+        for key, value in nutrients.items():
+            curr_nutrient = database.child(UserID).child('Nutrients').child(key).get().val()
+            curr_ID = curr_nutrient['ID']
+            curr_val = curr_nutrient[key+"Val"]
+            if curr_ID != 2000:
+                if curr_val < recommended_nutrient_values_male[str(curr_ID)]:
+                    insufficient_nutrient_list.append(key)
+            elif curr_ID == 2000:
+                if curr_val > recommended_nutrient_values_female[str(curr_ID)]:
+                    insufficient_nutrient_list.append(key)
+
+    elif sex == "Female":
+        for key, value in nutrients.items():
+            curr_nutrient = database.child(UserID).child('Nutrients').child(key).get().val()
+            curr_ID = curr_nutrient['ID']
+            curr_val = curr_nutrient[key+"Val"]
+            if curr_ID != 2000:
+                if curr_val < recommended_nutrient_values_female[str(curr_ID)]:
+                    insufficient_nutrient_list.append(key)
+            elif curr_ID == 2000:
+                if curr_val > recommended_nutrient_values_female[str(curr_ID)]:
+                    insufficient_nutrient_list.append(key)
+
+                
+    else:
+        print("Sex is not listed as male or female")
+    #database.child(UserID).child('FirstName').update()
+    return insufficient_nutrient_list
+
+
+def recommend_exercise(UserID):
+    cal_count = database.child(UserID).child('DailyCalorieCount').get().val()
+    #print(cal_count)
+    #cal_goal = database.child(UserID).child('DailyCalorieGoal').get().val()
+    fitness_goal = database.child(UserID).child('FitnessGoal').get().val()
+    cal_burned = database.child(UserID).child('DailyCalorieBurned').get().val()
+
+    cal_difference = cal_count - cal_burned
+
+    if fitness_goal == "Lose Weight":
+        if cal_difference >= 0:
+            return "More Exercise"
+        return "No Change Needed"
+
+    elif fitness_goal == "Gain Weight":
+        if cal_difference <= 0:
+            return "Less Exercise"
+        return "No Change Needed"
+
+    elif fitness_goal == "Maintain":
+        maintain_parameters = cal_count * 0.1
+        print(maintain_parameters)
+        if (maintain_parameters - cal_count < cal_difference) and (maintain_parameters + cal_count > cal_difference):
+            return "No Change Needed"
+        elif maintain_parameters - cal_count > cal_difference:
+            return "More Exercise"
+        else:
+            return "Less Exercise"
+    
+    return "Invalid Parameters (Check FitnessGoal in database)"
+
+# nutrient_bacon = get_calorie_intake("Bacon")
+# print(nutrient_bacon)
 # calorie_burned_test = calc_calories(20, 'walking', 125)
-# database_test = recommend_food("User01")
+# recommend_food_test = recommend_food("User01")
+# print(recommend_food_test)
+# recommend_exercise_test = recommend_exercise("User01")
+# print(recommend_exercise_test)
 # print(calorie_burned_test)
-# print(database_test)
+#print(database_test)
 # get_calorie_intake('salmon')
 
