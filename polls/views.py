@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .serializers import TrackerSerializer
 from .models import Health
 import pyrebase
-from tracker_algo import get_calorie_intake
+from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise
 
 config = {
   "apiKey" : "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
@@ -45,7 +45,9 @@ def apiOverview(request):
 		# 'Create':'/task-create/',
 		# 'Update':'/task-update/<str:pk>/',
 		# 'Delete':'/task-delete/<str:pk>/',
-		'Test':'/test-api/'
+		'Nutrient Tracker':'/tracker-api/',
+		'Recommend Food':'/recommend-food/',
+		'Recommend Exercise':'/recommend-exercise'
 		}
 
 	return Response(api_urls)
@@ -64,6 +66,24 @@ def test_tracker(request):
 
     food_result = get_calorie_intake(food)
     return Response({'result': food_result})
+
+@api_view(['POST'])
+def food_recommend(request):
+	UserID = request.data.get('UserID')
+	if not UserID:
+		return Response({'error': 'Please provide a valid UserID.'}, status=400)
+	
+	recommend_result = recommend_food(UserID)
+	return Response({'result': recommend_result})
+
+@api_view(['POST'])
+def exercise_recommend(request):
+	UserID = request.data.get('UserID')
+	if not UserID:
+		return Response({'error': 'Please provide a valid UserID.'}, status=400)
+	
+	recommend_result = recommend_exercise(UserID)
+	return Response({'result': recommend_result})
 
 # @api_view(['GET'])
 # def taskDetail(request, pk):
