@@ -25,33 +25,57 @@ function RegisterPage () {
 
     const isFormComplete = name && email && username && password && dateOfBirth && gender && height && weight;
 
+    const sendUser = async (UID) => {
+        try {
+          const response = await fetch('http://127.0.0.1:8000/api/add-user/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ UID }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            console.log("Successfully Registered User");
+            return data.result;
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (error) {
+          console.error('Error Registering User', error);
+          alert(error);
+        }
+      };
 
-const handleRegister = async (e) => {
-    e.preventDefault();
-    if (isFormComplete) {
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        // Save user data to Firestore
-        const userRef = doc(collection(firestore, "users"), user.uid);
-        
-        await setDoc(userRef, {
-          name,
-          username,
-          email,
-          dateOfBirth,
-          gender,
-          height,
-          weight,
-        });
-        // Redirect to user home
-        console.log("Redireciting to Home");
-        navigate('/');
-      } catch (error) {
-        console.error("Error registering user:", error.message);
-      }
-    }
-};
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        if (isFormComplete) {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            // Save user data to Firestore
+            const userRef = doc(collection(firestore, "users"), user.uid);
+            const UID = user.uid;
+            sendUser(UID);
+            await setDoc(userRef, {
+            name,
+            username,
+            email,
+            dateOfBirth,
+            gender,
+            height,
+            weight,
+            });
+            // Redirect to user home
+            console.log("Redireciting to Home");
+            navigate('/');
+        } catch (error) {
+            console.error("Error registering user:", error.message);
+        }
+        }
+    };
 
       
 
