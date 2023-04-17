@@ -8,11 +8,12 @@ import {Form} from 'react-bootstrap';
 function FoodPage () {
     const calorieGoal = 2000;
     const [currentCalories, setCurrentCalories] = useState(0);
-    // const [caloriesToAdd, setCaloriesToAdd] = useState('');
     const [foodName, setFoodName] = useState('');
+    const [top5Lacking, setTop5Lacking] = useState([]);
 
     const resetCalories = () => {
       setCurrentCalories(0);
+      setTop5Lacking([]);
     };
 
 
@@ -42,16 +43,51 @@ function FoodPage () {
       const addCalories = async () => {
         const foodResponse = await fetchCalories(foodName);
 
-        console.log(foodResponse.nutrient_name.indexOf("Energy"));
+        // console.log(foodResponse.nutrient_name.indexOf("Energy"));
           
         const caloriesToAdd = foodResponse.val[foodResponse.nutrient_name.indexOf("Energy")];
 
         if (caloriesToAdd) {
           setCurrentCalories(currentCalories + caloriesToAdd);
-          setFoodName('');
+          setFoodName("");
         }
       };
+
+      
     
+
+      const fetchFoodReccomendations = async (UserID) => {
+        try {
+          const response = await fetch('http://127.0.0.1:8000/api/recommend-food/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ UserID }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            return data.result;
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (error) {
+          console.error('Error fetching reccomendations:', error);
+          alert(error);
+        }
+      };
+
+
+      const handleGenerateRecommendations = async () => {
+        const UserID = "User01";
+        const nutrientData = await fetchFoodReccomendations(UserID); // Replace the argument with the appropriate data, if needed
+        const nutrientResult = nutrientData.slice(0,5);
+        setTop5Lacking(nutrientResult);
+      };
+      
+  
       const handleInputChange = (event) => {
         setFoodName(event.target.value);
       };
@@ -87,15 +123,32 @@ function FoodPage () {
                             </div>
 
                             <div className="food-container">
-                                <h3>Our Reccomendations</h3>
-                                <p>You should eat more !</p>
+                            <button type="button" class="btn btn-danger"  onClick={resetCalories}>Reset Calories</button>
                             </div>
                         </Col>
                 
                     </Row>
                 </Container>
 
-                <button type="button" class="btn btn-danger"  onClick={resetCalories}>Reset Calories</button>
+                <Container>
+                  <Row xs={1} sm={1} md={1} >
+                      <Col>
+                        <button type="button" class="btn btn-primary" onClick={handleGenerateRecommendations}> Generate Reccomendations</button>
+                      </Col>
+
+                      <Col> 
+                      <ul>
+                        {top5Lacking.map((nutrient) => (
+                          <li key={nutrient}>{nutrient}</li>
+                        ))}
+                      </ul>
+                      </Col>
+                  </Row>
+          
+
+                </Container>
+                
+                
         </div></>
     );
 }
