@@ -9,6 +9,7 @@ import ProfilePage from './pages/UserPages/ProfilePage';
 import HistoryPage from './pages/UserPages/HIstoryPage';
 import PersonalRegisterPage from './pages/PersonalRegisterPage';
 import EditProfilePage from './pages/UserPages/EditProfilePage';
+import { AuthProvider } from './AuthContext';
 
 
 
@@ -18,24 +19,26 @@ import { BrowserRouter as BrowserRouter, Route, Routes } from 'react-router-dom'
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-            <Route path ="/" element={<HomePage />}></Route>
-            <Route path ="/sign-in" element={<SignPage />}></Route>
-            <Route path ="/register" element={<RegisterPage/>}></Route>
-            <Route path ="/user-home" element={<UserHome/>}></Route>
-            <Route path ="/personal-register" element={<PersonalRegisterPage/>}></Route>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+              <Route path ="/" element={<HomePage />}></Route>
+              <Route path ="/sign-in" element={<SignPage />}></Route>
+              <Route path ="/register" element={<RegisterPage/>}></Route>
+              <Route path ="/user-home" element={<UserHome/>}></Route>
+              <Route path ="/personal-register" element={<PersonalRegisterPage/>}></Route>
 
 
-            <Route path ="/reccomendations" element={<RecPage/>}></Route>
-            <Route path ="/food" element={<FoodPage/>}></Route>
-            <Route path ="/profile" element={<ProfilePage/>}></Route>
-            <Route path ="/history" element={<HistoryPage/>}></Route>
-            <Route path ="/edit-profile" element={<EditProfilePage/>}></Route>
-            
+              <Route path ="/reccomendations" element={<RecPage/>}></Route>
+              <Route path ="/food" element={<FoodPage/>}></Route>
+              <Route path ="/profile" element={<ProfilePage/>}></Route>
+              <Route path ="/history" element={<HistoryPage/>}></Route>
+              <Route path ="/edit-profile" element={<EditProfilePage/>}></Route>
+              
 
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
 
     </div>
     

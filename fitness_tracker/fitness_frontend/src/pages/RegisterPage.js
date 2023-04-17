@@ -7,7 +7,7 @@ import FitnessGoalsDropdown from '../components/FitnessGoalsDropdown';
 import {auth, firestore} from "../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 
 
@@ -34,6 +34,7 @@ const handleRegister = async (e) => {
         const user = userCredential.user;
         // Save user data to Firestore
         const userRef = doc(collection(firestore, "users"), user.uid);
+        
         await setDoc(userRef, {
           name,
           username,
@@ -44,7 +45,8 @@ const handleRegister = async (e) => {
           weight,
         });
         // Redirect to user home
-        navigate('/user-home');
+        console.log("Redireciting to Home");
+        navigate('/');
       } catch (error) {
         console.error("Error registering user:", error.message);
       }
@@ -114,16 +116,11 @@ const handleRegister = async (e) => {
                         <Form.Control type="number" placeholder="Weight" value={weight} onChange={(e) => setWeight(e.target.value)} style={{width: '80%',  margin: '0 auto'}}/>
                     </Form.Group>
 
-                    
-
-
-                
+                                    
                     <div className="container" style={{padding: '5px 5px'}} >
-                        <Link to= '/user-home'> 
                             <Button variant="primary" type="submit" onClick={handleRegister} style={{backgroundColor: '#05386B', color: '#8ee4af', fontWeight: 'bold', width: '55%'}}>
                                 Register
                             </Button>
-                        </Link>
                         
                     </div>
                     </Form>
