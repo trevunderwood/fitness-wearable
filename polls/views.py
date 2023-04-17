@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .serializers import TrackerSerializer
 from .models import Health
 import pyrebase
-from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise
+from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database
 
 config = {
   "apiKey" : "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
@@ -47,7 +47,8 @@ def apiOverview(request):
 		# 'Delete':'/task-delete/<str:pk>/',
 		'Nutrient Tracker':'/tracker-api/',
 		'Recommend Food':'/recommend-food/',
-		'Recommend Exercise':'/recommend-exercise'
+		'Recommend Exercise':'/recommend-exercise/',
+		'Add User':'/add-user/'
 		}
 
 	return Response(api_urls)
@@ -85,6 +86,16 @@ def exercise_recommend(request):
 	
 	recommend_result = recommend_exercise(UserID)
 	return Response({'result': recommend_result})
+
+@api_view(['POST'])
+def firebase_entry(request):
+	uid = request.data.get("UID")
+	if not uid:
+		return Response({'error': 'Please provide a valid UserID.'}, status=400)
+	
+	set_user_database(uid)
+	return Response({'success':'Added new User to database'})
+	
 
 # @api_view(['GET'])
 # def taskDetail(request, pk):

@@ -45,11 +45,11 @@ def get_calorie_intake(food_name):
                     nutrients['val'].append(json_object['foods'][i]['foodNutrients'][j]['value'])
             #print(json.dumps(json_object['foods'][i]['foodNutrients'][0], indent=2))
     #cal = 0.0
-    for i in range(len(nutrients['nutrient_id'])):
-        print("Nutrient: {}".format(nutrients['nutrient_name'][i]))
-        print("nutrient id: {}".format(nutrients['nutrient_id'][i]))
-        print("Amount Per Serving: {} {}".format(nutrients['val'][i], nutrients['unit_name'][i]))
-        print()
+    # for i in range(len(nutrients['nutrient_id'])):
+    #     print("Nutrient: {}".format(nutrients['nutrient_name'][i]))
+    #     print("nutrient id: {}".format(nutrients['nutrient_id'][i]))
+    #     print("Amount Per Serving: {} {}".format(nutrients['val'][i], nutrients['unit_name'][i]))
+    #     print()
     
     #print(nutrients['nutrient_name'])
     #print("Calories Per Serving: {}".format(cal))
@@ -65,8 +65,8 @@ def calc_calories(time, activity, weight):
 def recommend_food(UserID):
     #name = database.child(UserID).child('FirstName').get().val()
     insufficient_nutrient_list = []
-    weight = database.child(UserID).child('Weight').get().val()
-    daily_cal_goal = database.child(UserID).child('DailyCalorieGoal').get().val()
+    weight = database.child("Users").child(UserID).child('Weight').get().val()
+    daily_cal_goal = database.child("Users").child(UserID).child('DailyCalorieGoal').get().val()
     recommended_nutrient_values_male = {
         '1003':0.36*weight,
         '1004':0.2*daily_cal_goal,
@@ -131,12 +131,12 @@ def recommend_food(UserID):
         '1079':25,
         '2000':24
     }
-    nutrients = database.child(UserID).child('Nutrients').get().val()
-    sex = database.child(UserID).child("Sex").get().val()
+    nutrients = database.child("Users").child(UserID).child('Nutrients').get().val()
+    sex = database.child("Users").child(UserID).child("Sex").get().val()
 
     if sex == "Male":
         for key, value in nutrients.items():
-            curr_nutrient = database.child(UserID).child('Nutrients').child(key).get().val()
+            curr_nutrient = database.child("Users").child(UserID).child('Nutrients').child(key).get().val()
             curr_ID = curr_nutrient['ID']
             curr_val = curr_nutrient[key+"Val"]
             if curr_ID != 2000:
@@ -148,7 +148,7 @@ def recommend_food(UserID):
 
     elif sex == "Female":
         for key, value in nutrients.items():
-            curr_nutrient = database.child(UserID).child('Nutrients').child(key).get().val()
+            curr_nutrient = database.child("Users").child(UserID).child('Nutrients').child(key).get().val()
             curr_ID = curr_nutrient['ID']
             curr_val = curr_nutrient[key+"Val"]
             if curr_ID != 2000:
@@ -166,11 +166,11 @@ def recommend_food(UserID):
 
 
 def recommend_exercise(UserID):
-    cal_count = database.child(UserID).child('DailyCalorieCount').get().val()
+    cal_count = database.child("Users").child(UserID).child('DailyCalorieCount').get().val()
     #print(cal_count)
     #cal_goal = database.child(UserID).child('DailyCalorieGoal').get().val()
-    fitness_goal = database.child(UserID).child('FitnessGoal').get().val()
-    cal_burned = database.child(UserID).child('DailyCalorieBurned').get().val()
+    fitness_goal = database.child("Users").child(UserID).child('FitnessGoal').get().val()
+    cal_burned = database.child("Users").child(UserID).child('DailyCalorieBurned').get().val()
 
     cal_difference = cal_count - cal_burned
 
@@ -186,7 +186,7 @@ def recommend_exercise(UserID):
 
     elif fitness_goal == "Maintain":
         maintain_parameters = cal_count * 0.1
-        print(maintain_parameters)
+        #print(maintain_parameters)
         if (maintain_parameters - cal_count < cal_difference) and (maintain_parameters + cal_count > cal_difference):
             return "No Change Needed"
         elif maintain_parameters - cal_count > cal_difference:
@@ -196,14 +196,201 @@ def recommend_exercise(UserID):
     
     return "Invalid Parameters (Check FitnessGoal in database)"
 
+def set_user_database(uid):
+    data = {
+        "DailyCalorieCount":0,
+        "FitnessGoal":"Maintain",
+        "DailyCalorieBurned":0,
+        "DailyCalorieGoal":2000,
+        "Nutrients":
+        {
+            "Protein":
+            {
+                "ID":1003,
+                "ProteinVal":0
+            },
+            "Fat":
+            {
+                "ID":1004,
+                "FatVal":0
+            },
+            "Carbohydrate":
+            {
+                "ID":1005,
+                "CarbohydrateVal":0
+            },    
+            "Calories":
+            {
+                "ID":1008,
+                "CaloriesVal":0
+            },
+            "Sugars":
+            {
+                "ID":2000,
+                "SugarsVal":0
+            },
+            "Fiber":
+            {
+                "ID":1079,
+                "FiberVal":0
+            },        
+            "Calcium":
+            {
+                "ID":1087,
+                "CalciumVal":0
+            },
+            "Iron":
+            {
+                "ID":1089,
+                "IronVal":0
+            },
+            "Sodium":
+            {
+                "ID":1093,
+                "SodiumVal":0
+            },
+            "VitaminA":
+            {
+                "ID":1104,
+                "VitaminAVal":0
+            },
+            "VitaminC":
+            {
+                "ID":1162,
+                "VitaminCVal":0
+            },
+            "Potassium":
+            {
+                "ID":1092,
+                "PotassiumVal":0
+            },
+            "Magnesium":
+            {
+                "ID":1090,
+                "MagnesiumVal":0
+            },
+            "Phosphorus":
+            {
+                "ID":1091,
+                "PhosphorusVal":0
+            },
+            "Zinc":
+            {
+                "ID":1095,
+                "ZincVal":0
+            },
+            "Copper":
+            {
+                "ID":1098,
+                "CopperVal":0
+            },
+            "Selenium":
+            {
+                "ID":1103,
+                "SeleniumVal":0
+            },
+            "VitaminE":
+            {
+                "ID":1109,
+                "VitaminEVal":0
+            },
+            "VitaminD":
+            {
+                "ID":1114,
+                "VitaminDVal":0
+            },
+            "Thiamin":
+            {
+                "ID":1165,
+                "ThiaminVal":0
+            },
+            "Riboflavin":
+            {
+                "ID":1166,
+                "RiboflavinVal":0
+            },
+            "Niacin":
+            {
+                "ID":1167,
+                "NiacinVal":0
+            },
+            "VitaminB6":
+            {
+                "ID":1175,
+                "VitaminB6Val":0
+            },
+            "Folate":
+            {
+                "ID":1177,
+                "FolateVal":0
+            },
+            "VitaminB12":
+            {
+                "ID":1178,
+                "VitaminB12Val":0
+            },
+            "VitaminK":
+            {
+                "ID":1185,
+                "VitaminKVal":0
+            },
+            "PantothenicAcid":
+            {
+                "ID":1170,
+                "PantothenicAcidVal":0
+            },
+            "Manganese":
+            {
+                "ID":1101,
+                "ManganeseVal":0
+            }
+        },
+        "Sex":"Male",
+        "Height":0,
+        "Weight":0,
+        "FirstName":"FName",
+        "LastName":"LName",
+        "Email":"email@email.com",
+        "AverageHR":0,
+        "TotalSteps":0,
+        "DOB":"07/08/2001"
+
+    }
+    database.child("Users").child(uid).set(data)
+
 # nutrient_bacon = get_calorie_intake("Bacon")
 # print(nutrient_bacon)
 # calorie_burned_test = calc_calories(20, 'walking', 125)
-# recommend_food_test = recommend_food("User01")
+# recommend_food_test = recommend_food("User03")
 # print(recommend_food_test)
-# recommend_exercise_test = recommend_exercise("User01")
-# print(recommend_exercise_test)
+recommend_exercise_test = recommend_exercise("User03")
+print(recommend_exercise_test)
 # print(calorie_burned_test)
 #print(database_test)
 # get_calorie_intake('salmon')
+
+# database.set(
+#     {
+#         "Users":
+#         {
+#             "User02":
+#             {
+#                 'nutrients':0
+#             }
+#         }
+#     }
+# )
+# users_ref = database.reference("/Users")
+# users_ref.set(
+#     {   "User03":
+#         {
+#             'nutrients':0
+#         }
+#         }
+# )
+
+#set_user_database("User03")
+#database.child("Users").push(data)
+#database.child("Users").child("User03").set(data)
+
 
