@@ -23,7 +23,7 @@ database=firebase.database()
 
 
 
-def get_calorie_intake(food_name):
+def get_calorie_intake(food_name, UserID):
     nutrients = {'nutrient_id': [], 'nutrient_name': [], 'unit_name' : [], 'val' : []}
     
     response = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=98oneQ37kG8dCa6r0rZcTKhi7hwnEgH9gYWAJMkc&query={}".format(food_name), verify=False)
@@ -51,6 +51,16 @@ def get_calorie_intake(food_name):
     #     print("Amount Per Serving: {} {}".format(nutrients['val'][i], nutrients['unit_name'][i]))
     #     print()
     
+    nutrients_database = database.child("Users").child(UserID).child('Nutrients').get().val()
+    for key, value in nutrients_database.items():
+            curr_nutrient = database.child("Users").child(UserID).child('Nutrients').child(key).get().val()
+            curr_ID = curr_nutrient['ID']
+            curr_val = curr_nutrient[key+"Val"]
+            for i in range(len(nutrients["nutrient_id"])):
+                if nutrients["nutrient_id"][i] == curr_ID:
+                    updated_val = curr_val + nutrients["val"][i]
+                    database.child("Users").child(UserID).child("Nutrients").child(key).update({key+"Val":updated_val})
+
     #print(nutrients['nutrient_name'])
     #print("Calories Per Serving: {}".format(cal))
     #print(nutrients['nutrient_name'])
@@ -363,8 +373,8 @@ def set_user_database(uid):
 # calorie_burned_test = calc_calories(20, 'walking', 125)
 # recommend_food_test = recommend_food("User03")
 # print(recommend_food_test)
-recommend_exercise_test = recommend_exercise("User03")
-print(recommend_exercise_test)
+# recommend_exercise_test = recommend_exercise("User03")
+# print(recommend_exercise_test)
 # print(calorie_burned_test)
 #print(database_test)
 # get_calorie_intake('salmon')
