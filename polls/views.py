@@ -60,13 +60,17 @@ def testAPI(request):
 	return Response(serializer.data)
 #Send a JSON that has the name of a food
 #Recieiving a JSON response that returns all the value
+
 @api_view(['POST'])
 def test_tracker(request):
     food = request.data.get('food')
+    UserID = request.data.get('UserID')
     if not food:
         return Response({'error': 'Please provide a food.'}, status=400)
+    if not UserID:
+        return Response({'error': 'Please provide a valid UserID.'}, status=400)
 
-    food_result = get_calorie_intake(food)
+    food_result = get_calorie_intake(food, UserID)
     return Response({'result': food_result})
 
 @api_view(['POST'])
