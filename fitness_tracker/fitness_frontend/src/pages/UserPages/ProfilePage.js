@@ -1,22 +1,80 @@
 import UserNavBar from "../../components/UserNavBar";
 import { Container, Row, Col } from 'react-bootstrap';
 import './styles/profilepagestyles.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {Link} from 'react-router-dom';
+import {useAuth} from '../../AuthContext';
+import { getDoc, doc } from "firebase/firestore";
+import { firestore } from "../../firebase";
+
+
+
 
 
 
 function ProfilePage () {
-    const [name, setName] = useState('John Doe');
-    const [username, setUsername] = useState('johndoe');
-    const [password, setPassword] = useState('********');
-    const [email, setEmail] = useState('john@example.com');
-    const [phoneNumber, setPhoneNumber] = useState('123-456-7890');
-    const [dob, setDob] = useState('01/01/2000');
-    const [gender, setGender] = useState('Male');
-    const [height, setHeight] = useState("85");
-    const [weight, setWeight] = useState('170');
-    const [fitnessGoals, setFitnessGoals] = useState('Lose weight');
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [dob, setDob] = useState('');
+    const [gender, setGender] = useState('');
+    const [height, setHeight] = useState("");
+    const [weight, setWeight] = useState('');
+    const [fitnessGoals, setFitnessGoals] = useState('');
+
+    const { currentUser } = useAuth();
+
+    const fetchUserData = async (uid) => {
+        try {
+          const userRef = doc(firestore, "users", uid);
+          const userSnapshot = await getDoc(userRef);
+      
+          if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            console.log("User data:", userData);
+            return userData;
+          } else {
+            console.error("User data not found");
+            return null;
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          return null;
+        }
+      };
+
+      useEffect(() => {
+        if (currentUser) {
+          fetchUserData(currentUser.uid).then((userData) => {
+            if (userData) {
+              const {
+                name,
+                username,
+                email,
+                password,
+                dateOfBirth,
+                gender,
+                height,
+                weight,
+                fitnessGoals,
+              } = userData;
+              setName(name);
+              setUsername(username);
+              setEmail(email);
+              setPassword(password);
+              setDob(dateOfBirth);
+              setGender(gender);
+              setHeight(height);
+              setWeight(weight);
+              setFitnessGoals(fitnessGoals);
+            }
+          });
+        }
+      }, [currentUser]);
+      
+      
     
     return (
         <><UserNavBar></UserNavBar>
@@ -41,12 +99,8 @@ function ProfilePage () {
                             <p>{username}</p>
 
                         </div>
-                            
                         </Col>
-                            <div className="profile-card">
-                                <h3>Password</h3>
-                                <p>{password}</p>
-                            </div>
+
 
                         <Col>
                             <div className="profile-card">
@@ -55,13 +109,6 @@ function ProfilePage () {
                             </div>
                         </Col>
 
-                        <Col>
-                            <div className="profile-card">
-                                <h3>Phone Number</h3>
-                                <p>{phoneNumber}</p>
-
-                            </div>
-                        </Col>
 
                          <Col>
                             <div className="profile-card">
@@ -75,7 +122,6 @@ function ProfilePage () {
                                 <h3>Gender</h3>
                                 <p>{gender}</p>
                             </div>
-                            
                         </Col>
 
                          <Col>

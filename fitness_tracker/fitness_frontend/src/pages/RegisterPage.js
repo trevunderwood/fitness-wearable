@@ -3,7 +3,6 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import logo from './fitness_tracker_logo.jpg'
 import { useState } from 'react';
-import FitnessGoalsDropdown from '../components/FitnessGoalsDropdown';
 import {auth, firestore} from "../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, setDoc } from 'firebase/firestore';
@@ -21,6 +20,7 @@ function RegisterPage () {
     const [gender, setGender] = useState('');
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
+    const [fitnessGoals, setFitnessGoals] = useState('');
     const navigate = useNavigate();
 
     const isFormComplete = name && email && username && password && dateOfBirth && gender && height && weight;
@@ -67,6 +67,7 @@ function RegisterPage () {
             gender,
             height,
             weight,
+            fitnessGoals,
             });
             // Redirect to user home
             console.log("Redireciting to Home");
@@ -125,8 +126,8 @@ function RegisterPage () {
                         <Form.Label>Gender</Form.Label>
                         <Form.Control as="select" value={gender} onChange={(e) => setGender(e.target.value)} style={{width: '80%', margin: '0 auto', borderRadius: '0'}}>
                             <option value="">Choose gender...</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -139,6 +140,17 @@ function RegisterPage () {
                         <Form.Label>Weight (lbs)</Form.Label>
                         <Form.Control type="number" placeholder="Weight" value={weight} onChange={(e) => setWeight(e.target.value)} style={{width: '80%',  margin: '0 auto'}}/>
                     </Form.Group>
+
+                    <Form.Group style={{padding: '5px 5px'}}>
+                        <Form.Label>Fitness Goals</Form.Label>
+                        <Form.Control as="select" value={fitnessGoals} onChange={(e) => setFitnessGoals(e.target.value)} style={{width: '80%', margin: '0 auto', borderRadius: '0'}}>
+                            <option value="">Choose Fitness Goals...</option>
+                            <option value="Maintain Weight">Maintain Weight</option>
+                            <option value="Gaining Weight">Gaining Weight</option>
+                            <option value="Losing Weight">Losing Weight</option>
+                        </Form.Control>
+                    </Form.Group>
+
 
                                     
                     <div className="container" style={{padding: '5px 5px'}} >
