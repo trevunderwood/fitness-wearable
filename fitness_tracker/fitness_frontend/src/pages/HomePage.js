@@ -1,8 +1,8 @@
-
 import OurMission from './OurMission'
 import {Link} from 'react-router-dom'; 
 import fit_logo from './trans_fitness_tracker_logo.png';
 import HomeNavBar from '../components/HomeNavBar';
+import Footer from '../components/Footer';
 
 
 function HomePage() {
@@ -32,11 +32,13 @@ function HomePage() {
 
             
 
-        </div><OurMission></OurMission></></>
+        </div>
+        <OurMission></OurMission></>
+        <div style={{marginTop: '50px'}}>
+            <Footer></Footer>
+        </div>
+        </>
     
-
-        
-
         
     );
 } 
