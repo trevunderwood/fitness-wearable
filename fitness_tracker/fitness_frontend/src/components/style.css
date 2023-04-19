@@ -1,0 +1,22 @@
+.left-components{
+    display: flex;
+    flex-direction: row; 
+    justify-content: flex-start;
+}
+
+.right-components{
+    display: flex;
+    flex-direction: row; 
+    margin-left: auto;
+    justify-content: flex-end;
+} 
+
+@media (max-width: 800px) {
+    .right-components{
+      flex-direction: column;
+    }
+    .left-components{
+        flex-direction: column;
+      }
+
+  }
