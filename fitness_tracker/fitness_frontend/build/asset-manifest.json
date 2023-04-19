@@ -1,6 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.e7b7d86a.css",
+
     "main.js": "/static/js/main.db0c7fe3.js",
     "static/js/787.d02b5c29.chunk.js": "/static/js/787.d02b5c29.chunk.js",
     "static/media/Proxima Nova Font.otf": "/static/media/Proxima Nova Font.7bc9ce404c297c24f210.otf",
@@ -8,11 +9,13 @@
     "static/media/fitness_tracker_logo.jpg": "/static/media/fitness_tracker_logo.7e15c43b414ad49720fc.jpg",
     "index.html": "/index.html",
     "main.e7b7d86a.css.map": "/static/css/main.e7b7d86a.css.map",
+
     "main.db0c7fe3.js.map": "/static/js/main.db0c7fe3.js.map",
     "787.d02b5c29.chunk.js.map": "/static/js/787.d02b5c29.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e7b7d86a.css",
+
     "static/js/main.db0c7fe3.js"
   ]
 }
