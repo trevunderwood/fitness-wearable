@@ -14,4 +14,5 @@ urlpatterns = [
 	path('recommend-food/', views.food_recommend, name="recommend-food"),
 	path('recommend-exercise/', views.exercise_recommend, name="recommend-exercise"),
 	path('add-user/', views.firebase_entry, name="add-user"),
+	path('reset-nutrients/', views.nutrient_reset, name="reset-nutrients"),
 ]
