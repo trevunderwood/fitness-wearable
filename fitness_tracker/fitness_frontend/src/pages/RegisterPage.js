@@ -7,6 +7,17 @@ import {auth, firestore} from "../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
+    authDomain: "fitness-wearable-20b9d.firebaseapp.com",
+    projectId: "fitness-wearable-20b9d",
+    storageBucket: "fitness-wearable-20b9d.appspot.com",
+    messagingSenderId: "551481552952",
+    appId: "1:551481552952:web:c4896638c53d29dd7e76cd",
+  };
 
 
 
@@ -68,6 +79,22 @@ function RegisterPage () {
             height,
             weight,
             fitnessGoals,
+            });
+
+            firebase.initializeApp(firebaseConfig);
+
+            // Get a reference to the database service
+            const database = firebase.database();
+            const user_ref= database.ref("Users/"+user.uid);
+            user_ref.update({
+                'Email':email,
+                'DOB':dateOfBirth,
+                'Sex':gender,
+                'Height':height,
+                'Weight':weight,
+                'FitnessGoal':fitnessGoals,
+                'Name':name,
+                'UserName':username
             });
             // Redirect to user home
             console.log("Redireciting to Home");
