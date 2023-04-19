@@ -103,7 +103,7 @@ function ProfilePage () {
                     </Row>
                 </Container>
                 <Link to = "/edit-profile">
-                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button style={{marginBottom: '20px'}} type="button" class="btn btn-primary">Edit</button>
                 </Link>
 
                 

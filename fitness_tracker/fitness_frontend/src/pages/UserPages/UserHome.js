@@ -27,7 +27,7 @@ function UserHome () {
         <><UserNavBar />
             <div className="">
                 <h1 style={{ fontSize:'60px', padding:'5px' }}>Summary</h1>
-                <Container>
+                <Container style={{marginBottom: '20px'}}>
                     <Row xs={1} sm={2} md={2} >
                         <Col>
                             <UserCard title ="Total Steps" body={totalSteps}/>

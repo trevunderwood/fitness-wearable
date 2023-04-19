@@ -11,12 +11,35 @@
     justify-content: flex-end;
 } 
 
+.mr-auto-home{
+    display: flex;
+    flex-direction: row; 
+    margin-left: 20px;
+    justify-content: flex-start;
+}
+
+.ml-auto-home{
+    display: flex;
+    flex-direction: row; 
+    margin-left: auto;
+    margin-right: 20px;
+    justify-content: flex-end;
+    /* align-items: right; */
+}
+
 @media (max-width: 800px) {
     .right-components{
-      flex-direction: column;
+        flex-direction: column;
+        margin-right: 100%;
     }
     .left-components{
         flex-direction: column;
-      }
+    }
+    .mr-auto-home{
+        margin-left: auto;
+    }
+    .ml-auto-home{
+        margin-right: auto;
+    }
+}
 
-  }

@@ -119,7 +119,7 @@ function FoodPage () {
                             <div className="food-container" >
                                 <h3>Log Calories </h3>
                                 <Form.Control type="text" placeholder="Name of Food Item" value={foodName} onChange={handleInputChange} style={{width: '80%',  margin: '0 auto'}}/>
-                                <button type="button" class="btn btn-secondary" onClick={addCalories}>Add Calories</button>
+                                <button style={{marginTop: '10px'}} type="button" class="btn btn-secondary" onClick={addCalories}>Add Calories</button>
                             </div>
 
                             <div className="food-container">
@@ -132,7 +132,7 @@ function FoodPage () {
 
                 <Container>
                   <Row xs={1} sm={1} md={1} >
-                      <Col>
+                      <Col style={{marginTop: '5px', alignContent: 'center'}} >
                         <button type="button" class="btn btn-primary" onClick={handleGenerateRecommendations}> Generate Reccomendations</button>
                       </Col>
 

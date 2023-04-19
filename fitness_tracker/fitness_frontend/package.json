@@ -8,6 +8,8 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.3",
     "firebase": "^9.19.1",
+    "mdb-react-ui-kit": "^6.0.0",
+    "mdb-ui-kit": "^6.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-circular-progressbar": "^2.1.0",
