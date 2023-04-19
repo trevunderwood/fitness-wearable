@@ -14,7 +14,9 @@ function FoodPage () {
 
     const { currentUser } = useAuth();
 
-    const resetCalories = () => {
+    const resetCalories = async () => {
+      const resetResponse = await fetchReset(currentUser.uid);
+      console.log("Current User UID:" , currentUser.uid);
       setCurrentCalories(0);
       setTop5Lacking([]);
     };
@@ -39,6 +41,29 @@ function FoodPage () {
           }
         } catch (error) {
           console.error('Error fetching calories:', error);
+          alert(error);
+        }
+      };
+
+      const fetchReset = async (UID) => {
+        try {
+          const response = await fetch('http://127.0.0.1:8000/api/reset-nutrients/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ UID }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            return data.result;
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (error) {
+          console.error('Error resetting calories:', error);
           alert(error);
         }
       };

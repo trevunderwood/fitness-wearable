@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .serializers import TrackerSerializer
 from .models import Health
 import pyrebase
-from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database
+from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database, reset_nutrients
 
 config = {
   "apiKey" : "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
@@ -48,7 +48,8 @@ def apiOverview(request):
 		'Nutrient Tracker':'/tracker-api/',
 		'Recommend Food':'/recommend-food/',
 		'Recommend Exercise':'/recommend-exercise/',
-		'Add User':'/add-user/'
+		'Add User':'/add-user/',
+		'Reset Nutrients':'/reset-nutrients/'
 		}
 
 	return Response(api_urls)
@@ -99,6 +100,15 @@ def firebase_entry(request):
 	
 	set_user_database(uid)
 	return Response({'success':'Added new User to database'})
+
+@api_view(['POST'])
+def nutrient_reset(request):
+	uid = request.data.get("UID")
+	if not uid:
+		return Response({'error': 'Please provide a valid UserID.'}, status=400)
+	reset_nutrients(uid)
+	return Response({'success':'Reset user nutrient values in database'})
+
 	
 
 # @api_view(['GET'])

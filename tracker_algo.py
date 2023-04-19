@@ -368,6 +368,13 @@ def set_user_database(uid):
     }
     database.child("Users").child(uid).set(data)
 
+
+def reset_nutrients(UserID):
+    nutrients_database = database.child("Users").child(UserID).child('Nutrients').get().val()
+
+    for key, value in nutrients_database.items():
+        database.child("Users").child(UserID).child("Nutrients").child(key).update({key+"Val":0})
+
 # nutrient_bacon = get_calorie_intake("Bacon")
 # print(nutrient_bacon)
 # calorie_burned_test = calc_calories(20, 'walking', 125)

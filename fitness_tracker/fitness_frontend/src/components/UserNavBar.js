@@ -29,6 +29,9 @@ function UserNavBar () {
           <Link to ="/profile" className="nav-link"> <FaUser /></Link>
         </Nav>
         <Nav className="ml-auto " >
+          <Link to ="/connection" className="nav-link">Connection</Link>
+        </Nav>
+        <Nav className="ml-auto " >
           <Link to ="/" className="nav-link"> Log Out</Link>
         </Nav>
         </div>
