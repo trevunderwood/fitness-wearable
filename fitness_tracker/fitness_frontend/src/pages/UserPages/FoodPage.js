@@ -4,6 +4,7 @@ import CircleProgress from "../../components/CircularProgressbar";
 import './styles/foodstyles.css';
 import React, { useState } from 'react';
 import {Form} from 'react-bootstrap';
+import { useAuth } from "../../AuthContext";
 
 function FoodPage () {
     const calorieGoal = 2000;
@@ -11,20 +12,22 @@ function FoodPage () {
     const [foodName, setFoodName] = useState('');
     const [top5Lacking, setTop5Lacking] = useState([]);
 
+    const { currentUser } = useAuth();
+
     const resetCalories = () => {
       setCurrentCalories(0);
       setTop5Lacking([]);
     };
 
 
-      const fetchCalories = async (food) => {
+      const fetchCalories = async (food, UserID) => {
         try {
           const response = await fetch('http://127.0.0.1:8000/api/tracker-api/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ food }),
+            body: JSON.stringify({ food, UserID }),
           });
     
           const data = await response.json();
@@ -41,7 +44,8 @@ function FoodPage () {
       };
 
       const addCalories = async () => {
-        const foodResponse = await fetchCalories(foodName);
+        const foodResponse = await fetchCalories(foodName, currentUser.uid);
+        console.log("Current User UID:" , currentUser.uid);
 
         // console.log(foodResponse.nutrient_name.indexOf("Energy"));
           
@@ -53,8 +57,6 @@ function FoodPage () {
         }
       };
 
-      
-    
 
       const fetchFoodReccomendations = async (UserID) => {
         try {
