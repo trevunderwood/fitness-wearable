@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from .serializers import TrackerSerializer
 from .models import Health
 import pyrebase
+from django.http import JsonResponse
+
 from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database, reset_nutrients
 
 config = {
@@ -81,7 +83,7 @@ def food_recommend(request):
 		return Response({'error': 'Please provide a valid UserID.'}, status=400)
 	
 	recommend_result = recommend_food(UserID)
-	return Response({'result': recommend_result})
+	return JsonResponse({'result': recommend_result})
 
 @api_view(['POST'])
 def exercise_recommend(request):

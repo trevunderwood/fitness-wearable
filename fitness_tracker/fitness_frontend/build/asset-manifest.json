@@ -1,18 +1,24 @@
 {
   "files": {
     "main.css": "/static/css/main.7e458e7c.css",
-    "main.js": "/static/js/main.82584b1a.js",
+
+    "main.js": "/static/js/main.7a75d14a.js",
+
     "static/js/787.d02b5c29.chunk.js": "/static/js/787.d02b5c29.chunk.js",
     "static/media/Proxima Nova Font.otf": "/static/media/Proxima Nova Font.7bc9ce404c297c24f210.otf",
     "static/media/trans_fitness_tracker_logo.png": "/static/media/trans_fitness_tracker_logo.e25522a55306b2bb4166.png",
     "static/media/fitness_tracker_logo.jpg": "/static/media/fitness_tracker_logo.7e15c43b414ad49720fc.jpg",
     "index.html": "/index.html",
     "main.7e458e7c.css.map": "/static/css/main.7e458e7c.css.map",
-    "main.82584b1a.js.map": "/static/js/main.82584b1a.js.map",
+
+    "main.7a75d14a.js.map": "/static/js/main.7a75d14a.js.map",
+
     "787.d02b5c29.chunk.js.map": "/static/js/787.d02b5c29.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7e458e7c.css",
-    "static/js/main.82584b1a.js"
+
+    "static/js/main.7a75d14a.js"
+
   ]
 }
