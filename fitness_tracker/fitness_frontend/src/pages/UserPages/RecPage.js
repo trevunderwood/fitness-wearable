@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import UserNavBar from "../../components/UserNavBar";
 
+
 function RecPage() {
 
     const [exercises, setExercises] = useState(null);
@@ -15,6 +16,7 @@ function RecPage() {
                 body: JSON.stringify({ UserID }),
             });
 
+            console.log("Data from API: ",data);
             const data = await response.json();
 
             if (response.ok) {
