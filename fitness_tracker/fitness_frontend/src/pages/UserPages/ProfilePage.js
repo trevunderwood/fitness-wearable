@@ -8,16 +8,10 @@ import { getDoc, doc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 
 
-
-
-
-
 function ProfilePage () {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
     const [dob, setDob] = useState('');
     const [gender, setGender] = useState('');
     const [height, setHeight] = useState("");
@@ -33,7 +27,7 @@ function ProfilePage () {
       
           if (userSnapshot.exists()) {
             const userData = userSnapshot.data();
-            console.log("User data:", userData);
+            // console.log("User data:", userData);
             return userData;
           } else {
             console.error("User data not found");
@@ -53,7 +47,6 @@ function ProfilePage () {
                 name,
                 username,
                 email,
-                password,
                 dateOfBirth,
                 gender,
                 height,
@@ -63,7 +56,6 @@ function ProfilePage () {
               setName(name);
               setUsername(username);
               setEmail(email);
-              setPassword(password);
               setDob(dateOfBirth);
               setGender(gender);
               setHeight(height);
