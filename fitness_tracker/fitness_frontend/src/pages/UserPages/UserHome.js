@@ -10,18 +10,18 @@ function UserHome () {
     const [caloriesBurnt, setCaloriesBurnt] = useState("100");
     const [caloricIntake, setCaloricIntake] = useState("200");
 
-    useEffect(() => {
-        // Fetch data from the database
-        fetch('/api/userData')
-          .then(response => response.json())
-          .then(data => {
-            setTotalSteps(data.totalSteps);
-            setAvgHeartRate(data.avgHeartRate);
-            setCaloriesBurnt(data.caloriesBurnt);
-            setCaloricIntake(data.caloricIntake);
-          })
-          .catch(error => console.error(error));
-      }, []);
+    // useEffect(() => {
+    //     // Fetch data from the database
+    //     fetch('/api/userData')
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         setTotalSteps(data.totalSteps);
+    //         setAvgHeartRate(data.avgHeartRate);
+    //         setCaloriesBurnt(data.caloriesBurnt);
+    //         setCaloricIntake(data.caloricIntake);
+    //       })
+    //       .catch(error => console.error(error));
+    //   }, []);
 
     return (
         <><UserNavBar />

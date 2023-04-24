@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import json
 import os
 import pyrebase
+from rest_framework.response import Response
 # USDA KEY: 98oneQ37kG8dCa6r0rZcTKhi7hwnEgH9gYWAJMkc
 
 config = {
@@ -75,7 +76,7 @@ def calc_calories(time, activity, weight):
 def recommend_food(UserID):
     #name = database.child(UserID).child('FirstName').get().val()
     insufficient_nutrient_list = []
-    weight = database.child("Users").child(UserID).child('Weight').get().val()
+    weight = float(database.child("Users").child(UserID).child('Weight').get().val())
     daily_cal_goal = database.child("Users").child(UserID).child('DailyCalorieGoal').get().val()
     recommended_nutrient_values_male = {
         '1003':0.36*weight,
@@ -176,27 +177,30 @@ def recommend_food(UserID):
 
 
 def recommend_exercise(UserID):
-    cal_count = database.child("Users").child(UserID).child('DailyCalorieCount').get().val()
+    cal_count = database.child("Users").child(UserID).child('Nutrients').child('Calories').child('CaloriesVal').get().val()
+
     #print(cal_count)
-    #cal_goal = database.child(UserID).child('DailyCalorieGoal').get().val()
+    cal_goal = database.child(UserID).child('DailyCalorieGoal').get().val()
     fitness_goal = database.child("Users").child(UserID).child('FitnessGoal').get().val()
     cal_burned = database.child("Users").child(UserID).child('DailyCalorieBurned').get().val()
-
+    print("Cal count: {}".format(cal_count))
+    print("Cal burned: {}".format(cal_burned))
+    print("fitness goal: {}".format(fitness_goal))
     cal_difference = cal_count - cal_burned
-
-    if fitness_goal == "Lose Weight":
+    print("Cal difference: {}".format(cal_difference))
+    if fitness_goal == "Losing Weight":
         if cal_difference >= 0:
             return "More Exercise"
         return "No Change Needed"
 
-    elif fitness_goal == "Gain Weight":
+    elif fitness_goal == "Gaining Weight":
         if cal_difference <= 0:
             return "Less Exercise"
         return "No Change Needed"
 
-    elif fitness_goal == "Maintain":
+    elif fitness_goal == "Maintaining Weight":
         maintain_parameters = cal_count * 0.1
-        #print(maintain_parameters)
+        print(maintain_parameters)
         if (maintain_parameters - cal_count < cal_difference) and (maintain_parameters + cal_count > cal_difference):
             return "No Change Needed"
         elif maintain_parameters - cal_count > cal_difference:
@@ -380,8 +384,8 @@ def reset_nutrients(UserID):
 # calorie_burned_test = calc_calories(20, 'walking', 125)
 # recommend_food_test = recommend_food("User03")
 # print(recommend_food_test)
-# recommend_exercise_test = recommend_exercise("User03")
-# print(recommend_exercise_test)
+recommend_exercise_test = recommend_exercise("6acpn7y15pW73XybPhhx00XMLlf2")
+print(recommend_exercise_test)
 # print(calorie_burned_test)
 #print(database_test)
 # get_calorie_intake('salmon')
