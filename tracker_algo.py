@@ -68,10 +68,15 @@ def get_calorie_intake(food_name, UserID):
     #print(json.dumps(food_nut, indent=2))
     return nutrients
 
-def calc_calories(time, activity, weight):
-    MET = {'Bicyling' : 8.0, 'calisthetics' : 5.0, 'weight lifting' : 6.0, 'yoga' : 2.5, 'walking' : 3.0, 'swimming' : 8.0, 'running' : 12.0, 'basketball' : 7.0, 'football' : 8.0, 'golf' : 4.5, 'tennis' : 7.0}
-    MET_val = MET[activity]
-    return (time * MET_val * 3.5 * weight) / 200
+def calc_cal_burn(time, heart_rate, HR_rest, weight):
+    # MET = {'Bicyling' : 8.0, 'calisthetics' : 5.0, 'weight lifting' : 6.0, 'yoga' : 2.5, 'walking' : 3.0, 'swimming' : 8.0, 'running' : 12.0, 'basketball' : 7.0, 'football' : 8.0, 'golf' : 4.5, 'tennis' : 7.0}
+    # MET_val = MET[activity]
+    #HR_rest = 70
+    HR_max = 200
+    HR_reserve = HR_max - HR_rest
+    MET_val = 3.5 + (heart_rate - HR_rest) / (0.2 * HR_reserve)
+    weight_kg = weight*0.453
+    return (time * MET_val * 3.5 * weight_kg) / 200
 
 def recommend_food(UserID):
     #name = database.child(UserID).child('FirstName').get().val()

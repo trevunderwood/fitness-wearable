@@ -8,7 +8,7 @@ from .models import Health
 import pyrebase
 from django.http import JsonResponse
 
-from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database, reset_nutrients
+from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database, reset_nutrients, calc_cal_burn
 
 config = {
   "apiKey" : "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
@@ -51,7 +51,8 @@ def apiOverview(request):
 		'Recommend Food':'/recommend-food/',
 		'Recommend Exercise':'/recommend-exercise/',
 		'Add User':'/add-user/',
-		'Reset Nutrients':'/reset-nutrients/'
+		'Reset Nutrients':'/reset-nutrients/',
+		'Calculate Calorie Burn':'/calc-calories/',
 		}
 
 	return Response(api_urls)
@@ -111,7 +112,25 @@ def nutrient_reset(request):
 	reset_nutrients(uid)
 	return Response({'success':'Reset user nutrient values in database'})
 
-	
+@api_view(['POST'])
+def calc_calories(request):
+	time = request.data.get('time')
+	#active_hr = request.data.get('ActiveHR')
+	resting_hr = request.data.get('RestHR')
+	uid = request.data.get('UserID')
+	if not time:
+		return Response({'error': 'Please provide a valid time.'}, status=400)
+	if not resting_hr:
+		return Response({'error': 'Please provide a valid resting heart rate.'}, status=400)
+	if not uid:
+		return Response({'error': 'Please provide a valid UserID.'}, status=400)
+	active_hr = database.child('Users').child(uid).child('AverageHR').get().val()
+	weight = float(database.child('Users').child(uid).child('Weight').get().val())
+	calories_burned = calc_cal_burn(time, active_hr, resting_hr, weight)
+
+	return Response({'result':calories_burned})
+
+
 
 # @api_view(['GET'])
 # def taskDetail(request, pk):
