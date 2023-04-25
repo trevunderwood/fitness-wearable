@@ -17,6 +17,7 @@ function UserHome () {
     const [caloriesBurnt, setCaloriesBurnt] = useState("100");
     const [caloricIntake, setCaloricIntake] = useState("200");
 
+
     const { currentUser } = useAuth();
 
     useEffect(() => {
@@ -41,6 +42,7 @@ function UserHome () {
             off(userRef, listener);
         };
       }, []);
+
 
     
 

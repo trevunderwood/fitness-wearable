@@ -7,6 +7,18 @@ import { firestore } from "../../firebase";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import "firebase/compat/database";
+import firebase from "firebase/compat/app";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
+    authDomain: "fitness-wearable-20b9d.firebaseapp.com",
+    projectId: "fitness-wearable-20b9d",
+    storageBucket: "fitness-wearable-20b9d.appspot.com",
+    messagingSenderId: "551481552952",
+    appId: "1:551481552952:web:c4896638c53d29dd7e76cd",
+  };
+
 
 function EditProfilePage () {
     const [name, setName] = useState('');
@@ -82,6 +94,20 @@ function EditProfilePage () {
             weight,
             fitnessGoals,
           });
+          
+          firebase.initializeApp(firebaseConfig);
+          const database = firebase.database();
+          const user_ref= database.ref("Users/"+currentUser.uid);
+          user_ref.update({
+              'Email':email,
+              'DOB':dob,
+              'Sex':gender,
+              'Height':height,
+              'Weight':weight,
+              'FitnessGoal':fitnessGoals,
+              'Name':name,
+              'UserName':username
+          });
           console.log("Profile updated successfully!")
         } catch (error) {
           console.error("Error updating profile:", error);
@@ -143,7 +169,7 @@ function EditProfilePage () {
                             <Form.Label>Fitness Goals</Form.Label>
                                 <Form.Control as="select" value = {fitnessGoals} style={{width: '100%', margin: '0 auto', borderRadius: '0'}} onChange={(e) => setFitnessGoals(e.target.value)}>
                                 <option value="">Choose Fitness Goals...</option>
-                                <option value="Maintain Weight">Maintain Weight</option>
+                                <option value="Maintaining Weight">Maintaining Weight</option>
                                 <option value="Gaining Weight">Gaining Weight</option>
                                 <option value="Losing Weight">Losing Weight</option>
                                 </Form.Control>

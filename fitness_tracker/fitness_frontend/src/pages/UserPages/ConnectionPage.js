@@ -1,12 +1,26 @@
 import { useState } from 'react';
 import UserNavBar from "../../components/UserNavBar";
+import { getAuth } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { useAuth } from "../../AuthContext";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
+    authDomain: "fitness-wearable-20b9d.firebaseapp.com",
+    projectId: "fitness-wearable-20b9d",
+    storageBucket: "fitness-wearable-20b9d.appspot.com",
+    messagingSenderId: "551481552952",
+    appId: "1:551481552952:web:c4896638c53d29dd7e76cd",
+  };
 
 
 
 function ConnectionPage() {
   const [connected, setConnected] = useState(false);
   const [device, setDevice] = useState(null);
-
+  const { currentUser } = useAuth();
   async function connectToDevice() {
     try {
       const device = await navigator.bluetooth.requestDevice({
@@ -25,10 +39,16 @@ function ConnectionPage() {
       await temperature.startNotifications();
       await steps.startNotifications();
 
+      
+      //UserID = currentUser.uid
+      
+
       heartRate.addEventListener('characteristicvaluechanged', e => {
         const value = e.target.value.getUint8(0);
 
         console.log(`${"47ce1097-088b-4e84-addc-0e31013865ab"} changed`, value);
+        updateHeartrateEverySecond(value);
+
       });
       heartRate.readValue();
 
@@ -43,6 +63,7 @@ function ConnectionPage() {
         const value = e.target.value.getUint8(0);
 
         console.log(`${"72a2030c-de20-41a0-ae42-2aa1dd07e977"} changed`, value);
+        updateStepsEverySecond(value);
       });
       steps.readValue();
 
@@ -52,6 +73,37 @@ function ConnectionPage() {
       console.error('Error:', error);
     }
   }
+
+function updateHeartrateEverySecond(valueToUpdate) {
+
+  firebase.initializeApp(firebaseConfig);
+
+  // Get a reference to the database service
+  const database = firebase.database();
+  const user_ref= database.ref("Users/"+currentUser.uid);
+
+  user_ref.update({ 'AverageHR' : valueToUpdate }); // Update the element with the provided value
+}
+// function updateTempEverySecond(valueToUpdate) {
+
+//   firebase.initializeApp(firebaseConfig);
+
+//   // Get a reference to the database service
+//   const database = firebase.database();
+//   const user_ref= database.ref("Users/"+currentUser.uid);
+
+//   user_ref.update({ 'AverageHR' : valueToUpdate }); // Update the element with the provided value
+// }
+function updateStepsEverySecond(valueToUpdate) {
+
+  firebase.initializeApp(firebaseConfig);
+
+  // Get a reference to the database service
+  const database = firebase.database();
+  const user_ref= database.ref("Users/"+currentUser.uid);
+
+  user_ref.update({ 'TotalSteps' : valueToUpdate }); // Update the element with the provided value
+}
 
   return (
         <><UserNavBar></UserNavBar><div>

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import UserNavBar from "../../components/UserNavBar";
+import { useAuth } from "../../AuthContext";
 
 
 function RecPage() {
 
     const [exercises, setExercises] = useState(null);
-
+    const { currentUser } = useAuth();
     const fetchExercise = async (UserID) => {
         try {
             const response = await fetch('http://127.0.0.1:8000/api/recommend-exercise/', {
@@ -31,7 +32,8 @@ function RecPage() {
     };
 
     useEffect(() => {
-        const UserID = "User01";
+        
+        const UserID = currentUser.uid;
         fetchExercise(UserID).then(result => setExercises(result)); // Replace with the actual user ID
     }, []);
 

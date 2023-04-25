@@ -108,7 +108,7 @@ function FoodPage () {
 
 
       const handleGenerateRecommendations = async () => {
-        const UserID = "User01";
+        const UserID = currentUser.uid;
         const nutrientData = await fetchFoodReccomendations(UserID); // Replace the argument with the appropriate data, if needed
         const nutrientResult = nutrientData.slice(0,5);
         setTop5Lacking(nutrientResult);
