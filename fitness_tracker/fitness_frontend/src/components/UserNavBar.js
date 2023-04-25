@@ -20,9 +20,9 @@ function UserNavBar () {
         <Nav className="mr-auto">
             <Link to="/food" className="nav-link">Food</Link>
         </Nav>
-        <Nav className="mr-auto">
+        {/* <Nav className="mr-auto">
             <Link to="/history" className="nav-link">History</Link>
-        </Nav>
+        </Nav> */}
         </div>
         <div className='right-components' style={{display: 'flex', flexDirection: 'row', marginLeft: 'auto' , justifyContent: 'flex-end'}}>
         <Nav className="ml-auto " >
