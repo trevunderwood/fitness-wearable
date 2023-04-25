@@ -3,13 +3,16 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from './fitness_tracker_logo.jpg';
 import  { useAuth } from '../AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+
 
 
 // This is the sign in page
 function SignPage() {
     const { signIn } = useAuth();
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,6 +24,7 @@ function SignPage() {
         navigate('/user-home');
         } catch (error) {
         console.error('Error signing in:', error);
+        setError('Incorrect Email or Password');
         // Handle sign in error (e.g., show an error message)
         }
     };
@@ -51,6 +55,11 @@ function SignPage() {
                         </Button>
                 </div>
                 </Form>
+                {error && (
+                <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>
+                )}
                 <div className="container" style={{padding: '5px 5px'}} >
                     <p> Don't have an accout? 
                         <Link to = "/register" style={{textDecoration: 'None', color: 'black', padding: '6px'}}>

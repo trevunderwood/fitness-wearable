@@ -2,6 +2,13 @@ import UserNavBar from "../../components/UserNavBar";
 import { Container, Row, Col } from 'react-bootstrap';
 import UserCard from "../../components/UserCard";
 import React, { useEffect, useState } from 'react';
+import {useAuth} from '../../AuthContext';
+import { ref, onValue, off} from 'firebase/database'; // Add this import
+import { database } from "../../firebase";
+
+
+
+
 
 function UserHome () {
     // Values that will be displayed on user home page
@@ -10,18 +17,34 @@ function UserHome () {
     const [caloriesBurnt, setCaloriesBurnt] = useState("100");
     const [caloricIntake, setCaloricIntake] = useState("200");
 
-    // useEffect(() => {
-    //     // Fetch data from the database
-    //     fetch('/api/userData')
-    //       .then(response => response.json())
-    //       .then(data => {
-    //         setTotalSteps(data.totalSteps);
-    //         setAvgHeartRate(data.avgHeartRate);
-    //         setCaloriesBurnt(data.caloriesBurnt);
-    //         setCaloricIntake(data.caloricIntake);
-    //       })
-    //       .catch(error => console.error(error));
-    //   }, []);
+
+    const { currentUser } = useAuth();
+
+    useEffect(() => {
+        console.log("UID: ", currentUser.uid)
+        const userId = currentUser.uid; // Replace this with the user ID you want to fetch data for
+    
+        const userRef = ref(database, `Users/${userId}`);
+
+        const listener = onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log("Date of Birth", data.AverageHR);
+            setTotalSteps(data.TotalSteps);
+            setAvgHeartRate(data.AverageHR);
+            setCaloriesBurnt(data.DailyCalorieBurned);
+            setCaloricIntake(data.DailyCalorieCount);
+             // Cleanup the listener when the component is unmounted
+        console.log("Fetched Date", data.totalSteps);
+          });
+    
+       
+        return () => {
+            off(userRef, listener);
+        };
+      }, []);
+
+
+    
 
     return (
         <><UserNavBar />
@@ -46,6 +69,7 @@ function UserHome () {
                         </Col>
                     </Row>
                 </Container>
+
             </div>
             
         
