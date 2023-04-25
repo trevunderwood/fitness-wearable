@@ -23,6 +23,9 @@ function UserNavBar () {
         {/* <Nav className="mr-auto">
             <Link to="/history" className="nav-link">History</Link>
         </Nav> */}
+        <Nav className="mr-auto">
+            <Link to="/workout" className="nav-link">Workout</Link>
+        </Nav>
         </div>
         <div className='right-components' style={{display: 'flex', flexDirection: 'row', marginLeft: 'auto' , justifyContent: 'flex-end'}}>
         <Nav className="ml-auto " >

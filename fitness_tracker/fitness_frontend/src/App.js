@@ -10,6 +10,7 @@ import HistoryPage from './pages/UserPages/HIstoryPage';
 import PersonalRegisterPage from './pages/PersonalRegisterPage';
 import EditProfilePage from './pages/UserPages/EditProfilePage';
 import ConnectionPage from './pages/UserPages/ConnectionPage';
+import WorkoutPage from './pages/WorkoutPage';
 import { AuthProvider } from './AuthContext';
 
 
@@ -35,6 +36,7 @@ function App() {
               <Route path ="/profile" element={<ProfilePage/>}></Route>
               <Route path ="/history" element={<HistoryPage/>}></Route>
               <Route path ="/edit-profile" element={<EditProfilePage/>}></Route>
+              <Route path ="/workout" element={<WorkoutPage/>}></Route>
 
               <Route path ="/connection" element={<ConnectionPage/>}></Route>
 
