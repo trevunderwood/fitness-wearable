@@ -8,7 +8,7 @@ from .models import Health
 import pyrebase
 from django.http import JsonResponse
 
-from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database, reset_nutrients, calc_cal_burn
+from tracker_algo import get_calorie_intake, recommend_food, recommend_exercise, set_user_database, reset_nutrients, calc_cal_burn, display_calories
 
 config = {
   "apiKey" : "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
@@ -53,6 +53,7 @@ def apiOverview(request):
 		'Add User':'/add-user/',
 		'Reset Nutrients':'/reset-nutrients/',
 		'Calculate Calorie Burn':'/calc-calories/',
+		'Display Calories':'/display-calories/'
 		}
 
 	return Response(api_urls)
@@ -130,6 +131,13 @@ def calc_calories(request):
 
 	return Response({'result':calories_burned})
 
+@api_view(['POST'])
+def display_cal(request):
+	UserID = request.data.get('UserID')
+	if not UserID:
+		return Response({'error': 'Please provide a valid UserID.'}, status=400)
+	cal = display_calories(UserID)
+	return Response({'result':cal})
 
 
 # @api_view(['GET'])

@@ -21,7 +21,7 @@ function UserHome () {
     const { currentUser } = useAuth();
 
     useEffect(() => {
-        console.log("UID: ", currentUser.uid)
+        //console.log("UID: ", currentUser.uid)
         const userId = currentUser.uid; // Replace this with the user ID you want to fetch data for
     
         const userRef = ref(database, `Users/${userId}`);
