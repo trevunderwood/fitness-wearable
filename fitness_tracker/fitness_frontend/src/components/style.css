@@ -28,9 +28,8 @@
 }
 
 @media (max-width: 800px) {
-    .right-components{
-        flex-direction: column;
-        margin-right: 100%;
+    .profile-logo{
+        margin-left: auto;
     }
     .left-components{
         flex-direction: column;

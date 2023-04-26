@@ -20,22 +20,19 @@ function UserNavBar () {
         <Nav className="mr-auto">
             <Link to="/food" className="nav-link">Food</Link>
         </Nav>
-        {/* <Nav className="mr-auto">
-            <Link to="/history" className="nav-link">History</Link>
-        </Nav> */}
         <Nav className="mr-auto">
-            <Link to="/workout" className="nav-link">Workout</Link>
+            <Link to="/history" className="nav-link">History</Link>
         </Nav>
         </div>
-        <div className='right-components' style={{display: 'flex', flexDirection: 'row', marginLeft: 'auto' , justifyContent: 'flex-end'}}>
-        <Nav className="ml-auto " >
-          <Link to ="/profile" className="nav-link"> <FaUser /></Link>
+        <div className='right-components'>
+        <Nav>
+          <Link to ="/connection" className="nav-link">Connect</Link>
+        </Nav>
+        <Nav className='profile-logo'>
+          <Link to ="/profile" className="nav-link"><FaUser /></Link>
         </Nav>
         <Nav className="ml-auto " >
-          <Link to ="/connection" className="nav-link">Connection</Link>
-        </Nav>
-        <Nav className="ml-auto " >
-          <Link to ="/" className="nav-link"> Log Out</Link>
+          <Link to ="/" className="nav-link">Log Out</Link>
         </Nav>
         </div>
 
