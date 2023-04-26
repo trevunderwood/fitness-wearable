@@ -15,9 +15,6 @@ function UserNavBar () {
         <Link to="/user-home" className="nav-link">Summary</Link>
         </Nav>
         <Nav className="mr-auto">
-          <Link to="/reccomendations" className="nav-link">Recommendations</Link>
-        </Nav>
-        <Nav className="mr-auto">
             <Link to="/food" className="nav-link">Food</Link>
         </Nav>
         <Nav className="mr-auto">

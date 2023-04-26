@@ -148,9 +148,9 @@ function updateStepsByOne() {
 }
 
   return (
-        <><UserNavBar></UserNavBar><div>
-          <h1>Hello World</h1>
-          <button onClick={connectToDevice}>Connect to Your Device</button>
+        <><UserNavBar></UserNavBar><div style={{marginTop: "20%"}}>
+          <h1>Click The Button To Connect To Watch</h1>
+          <button  onClick={connectToDevice}>Connect to Your Device</button>
           {connected && (
               <p>Connected to device: {device.name}</p>
           )}
