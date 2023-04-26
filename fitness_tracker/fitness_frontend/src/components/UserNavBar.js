@@ -21,7 +21,7 @@ function UserNavBar () {
             <Link to="/food" className="nav-link">Food</Link>
         </Nav>
         <Nav className="mr-auto">
-            <Link to="/history" className="nav-link">History</Link>
+            <Link to="/workout" className="nav-link">Workout</Link>
         </Nav>
         </div>
         <div className='right-components'>

@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import json
 import os
 import pyrebase
+import datetime
 from rest_framework.response import Response
 # USDA KEY: 98oneQ37kG8dCa6r0rZcTKhi7hwnEgH9gYWAJMkc
 
@@ -383,6 +384,35 @@ def reset_nutrients(UserID):
 
     for key, value in nutrients_database.items():
         database.child("Users").child(UserID).child("Nutrients").child(key).update({key+"Val":0})
+
+def calculate_bmr(height, weight, gender, birth_date):
+    """
+    Calculates the Basal Metabolic Rate (BMR) based on height, weight, gender, and date of birth.
+
+    Parameters:
+    height (float): Height in centimeters.
+    weight (float): Weight in kilograms.
+    gender (str): Gender, either 'male' or 'female'.
+    birth_date (str): Date of birth in 'YYYY-MM-DD' format.
+
+    Returns:
+    BMR (float): Basal Metabolic Rate in calories.
+    """
+
+    # Calculate age in years
+    today = datetime.date.today()
+    birth_date = datetime.datetime.strptime(birth_date, "%Y-%m-%d").date()
+    age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+
+    # Calculate BMR based on gender
+    if gender == 'male':
+        bmr = 88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)
+    elif gender == 'female':
+        bmr = 447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)
+    else:
+        raise ValueError("Invalid gender. Gender must be 'male' or 'female'.")
+
+    return bmr
 
 # nutrient_bacon = get_calorie_intake("Bacon")
 # print(nutrient_bacon)
