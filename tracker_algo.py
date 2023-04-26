@@ -398,29 +398,39 @@ def calculate_bmr(height, weight, gender, birth_date):
     Returns:
     BMR (float): Basal Metabolic Rate in calories.
     """
-
+    height = height * 2.54
+    weight = weight * 0.454
     # Calculate age in years
     today = datetime.date.today()
-    birth_date = datetime.datetime.strptime(birth_date, "%Y-%m-%d").date()
+    birth_date = datetime.datetime.strptime(birth_date, "%m/%d/%Y").date()
     age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
 
     # Calculate BMR based on gender
-    if gender == 'male':
+    if gender == 'Male':
         bmr = 88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)
-    elif gender == 'female':
+    elif gender == 'Female':
         bmr = 447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)
     else:
-        raise ValueError("Invalid gender. Gender must be 'male' or 'female'.")
+        raise ValueError("Invalid gender. Gender must be 'Male' or 'Female'.")
 
     return bmr
+
+def display_calories(UserID):
+    cal = database.child("Users").child(UserID).child('Nutrients').child('Calories').child('CaloriesVal').get().val()
+    return cal
 
 # nutrient_bacon = get_calorie_intake("Bacon")
 # print(nutrient_bacon)
 # calorie_burned_test = calc_calories(20, 'walking', 125)
 # recommend_food_test = recommend_food("User03")
 # print(recommend_food_test)
-recommend_exercise_test = recommend_exercise("6acpn7y15pW73XybPhhx00XMLlf2")
-print(recommend_exercise_test)
+#recommend_exercise_test = recommend_exercise("6acpn7y15pW73XybPhhx00XMLlf2")
+
+#print(recommend_exercise_test)
+
+bmr = calculate_bmr(70,125,"Male", "07/08/2001")
+print(bmr)
+
 # print(calorie_burned_test)
 #print(database_test)
 # get_calorie_intake('salmon')

@@ -190,11 +190,11 @@ function FoodPage () {
                             <div className="food-container" >
                                 <h3>Log Calories </h3>
                                 <Form.Control type="text" placeholder="Name of Food Item" value={foodName} onChange={handleInputChange} style={{width: '80%',  margin: '0 auto'}}/>
-                                <button style={{marginTop: '5px'}} type="button" class="btn btn-secondary" onClick={addCalories}>Add Calories</button>
+                                <button type="button" class="btn btn-secondary" onClick={addCalories}>Add Calories</button>
                             </div>
 
                             <div className="food-container">
-                            <button style={{marginTop: '-4px'}} type="button" class="btn btn-danger"  onClick={resetCalories}>Reset Calories</button>
+                            <button type="button" class="btn btn-danger"  onClick={resetCalories}>Reset Calories</button>
                             </div>
                         </Col>
                 
