@@ -5,6 +5,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { useAuth } from "../../AuthContext";
+import { getDatabase, ref, onValue, increment, set, update} from "firebase/database";
 
 const firebaseConfig = {
     apiKey: "AIzaSyA52p_7bAjYqIDHIIU3nECuljQ9_Lsz8r4",
@@ -15,7 +16,7 @@ const firebaseConfig = {
     appId: "1:551481552952:web:c4896638c53d29dd7e76cd",
   };
 
-
+var curr_steps = 0;
 
 function ConnectionPage() {
   const [connected, setConnected] = useState(false);
@@ -47,6 +48,7 @@ function ConnectionPage() {
         const value = e.target.value.getUint8(0);
 
         console.log(`${"47ce1097-088b-4e84-addc-0e31013865ab"} changed`, value);
+        //console.log("HR");
         updateHeartrateEverySecond(value);
 
       });
@@ -61,9 +63,23 @@ function ConnectionPage() {
 
       steps.addEventListener('characteristicvaluechanged', e => {
         const value = e.target.value.getUint8(0);
-
-        console.log(`${"72a2030c-de20-41a0-ae42-2aa1dd07e977"} changed`, value);
-        updateStepsEverySecond(value);
+        if(value == 1){
+          curr_steps += 1;
+        }
+        
+        console.log(`${"72a2030c-de20-41a0-ae42-2aa1dd07e977"} changed. A step counted.`, value, curr_steps);
+        //console.log("STEP");
+        const database = firebase.database();
+        const increaseSteps = async () =>{
+          await update(ref(database, "Users/"+currentUser.uid),{
+            TotalSteps : increment(1)
+          });
+        };
+        if (value === 1) {
+          
+          increaseSteps();
+          
+        }
       });
       steps.readValue();
 
@@ -94,15 +110,41 @@ function updateHeartrateEverySecond(valueToUpdate) {
 
 //   user_ref.update({ 'AverageHR' : valueToUpdate }); // Update the element with the provided value
 // }
-function updateStepsEverySecond(valueToUpdate) {
+// function updateStepsEverySecond(valueToUpdate) {
 
-  firebase.initializeApp(firebaseConfig);
+//   firebase.initializeApp(firebaseConfig);
 
-  // Get a reference to the database service
+//   // Get a reference to the database service
+//   const database = firebase.database();
+//   const user_ref= database.ref("Users/"+currentUser.uid);
+  
+//   const current_step_ref = database.ref("Users/"+currentUser.uid+"/TotalSteps");
+//   onValue(current_step_ref, (snapshot) => {
+//     curr_steps = snapshot.val();
+//     console.log("on snapshot: " + curr_steps);
+//   });
+
+//   if(valueToUpdate == 1){
+//     curr_steps += 1;
+//   }
+//   console.log("on update: " + curr_steps);
+//   user_ref.update({ 'TotalSteps' : curr_steps }); // Update the element with the provided value
+// }
+
+
+function updateStepsByOne() {
   const database = firebase.database();
-  const user_ref= database.ref("Users/"+currentUser.uid);
-
-  user_ref.update({ 'TotalSteps' : valueToUpdate }); // Update the element with the provided value
+  const current_step_ref = database.ref("Users/"+currentUser.uid);
+  // Retrieve the current value from the database
+  current_step_ref.once('TotalSteps', snapshot => {
+    const currentValue = snapshot.val();
+    
+    // Add 1 to the retrieved value
+    const newValue = currentValue + 1;
+    
+    // Update the database with the new value
+    current_step_ref.set(newValue);
+  });
 }
 
   return (

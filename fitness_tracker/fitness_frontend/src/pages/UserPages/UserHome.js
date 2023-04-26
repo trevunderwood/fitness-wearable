@@ -25,17 +25,21 @@ function UserHome () {
         const userId = currentUser.uid; // Replace this with the user ID you want to fetch data for
     
         const userRef = ref(database, `Users/${userId}`);
-
+        const nutrientRef = ref(database,  `Users/${userId}/Nutrients/Calories`);
         const listener = onValue(userRef, (snapshot) => {
             const data = snapshot.val();
             console.log("Date of Birth", data.AverageHR);
             setTotalSteps(data.TotalSteps);
             setAvgHeartRate(data.AverageHR);
             setCaloriesBurnt(data.DailyCalorieBurned);
-            setCaloricIntake(data.DailyCalorieCount);
+            //setCaloricIntake(data.DailyCalorieCount);
              // Cleanup the listener when the component is unmounted
         console.log("Fetched Date", data.totalSteps);
           });
+        const listener2 = onValue(nutrientRef, (snapshot)=>{
+            const data = snapshot.val();
+            setCaloricIntake(data.CaloriesVal);
+        });
     
        
         return () => {
