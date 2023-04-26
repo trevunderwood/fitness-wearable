@@ -196,23 +196,23 @@ def recommend_exercise(UserID):
     print("Cal difference: {}".format(cal_difference))
     if fitness_goal == "Losing Weight":
         if cal_difference >= 0:
-            return "More Exercise"
-        return "No Change Needed"
+            return "More exercise is needed to fulfill your fitness goal. Try going for a run!"
+        return "No change is needed to your exercise levels to fulfill your fitness goal."
 
     elif fitness_goal == "Gaining Weight":
         if cal_difference <= 0:
-            return "Less Exercise"
-        return "No Change Needed"
+            return "Less exercise is needed to fulfill your fitness goal. Go eat some more food and work out some more later!"
+        return "No change is needed to your exercise levels to fulfill your fitness goal."
 
     elif fitness_goal == "Maintaining Weight":
         maintain_parameters = cal_count * 0.1
         print(maintain_parameters)
         if (maintain_parameters - cal_count < cal_difference) and (maintain_parameters + cal_count > cal_difference):
-            return "No Change Needed"
+            return "No change is needed to your exercise levels to fulfill your fitness goal."
         elif maintain_parameters - cal_count > cal_difference:
-            return "More Exercise"
+            return "More exercise is needed to fulfill your fitness goal. Try going for a run!"
         else:
-            return "Less Exercise"
+            return "Less exercise is needed to fulfill your fitness goal. Go eat some more food and work out some more later!"
     
     return "Invalid Parameters (Check FitnessGoal in database)"
 

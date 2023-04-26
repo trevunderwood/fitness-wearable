@@ -13,8 +13,10 @@ import { database } from "../../firebase";
 function FoodPage () {
     const calorieGoal = 2000;
     const [currentCalories, setCurrentCalories] = useState(0);
+    const [exercises, setExercises] = useState(null);
     const [foodName, setFoodName] = useState('');
     const [top5Lacking, setTop5Lacking] = useState([]);
+    const [top5letters, setTop5letters] = useState("");
 
     const { currentUser } = useAuth();
 
@@ -25,7 +27,31 @@ function FoodPage () {
       setTop5Lacking([]);
     };
 
+    const fetchExercise = async (UserID) => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/recommend-exercise/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ UserID }),
+            });
 
+            //console.log("Data from API: ",data);
+            const data = await response.json();
+
+            if (response.ok) {
+                return data.result;
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            console.error('Error fetching Exercises:', error);
+            alert(error);
+        }
+    };
+
+  
     // Add this function inside your component
     const fetchDailyCalorieCount = async () => {
       
@@ -147,8 +173,11 @@ function FoodPage () {
       const handleGenerateRecommendations = async () => {
         const UserID = currentUser.uid;
         const nutrientData = await fetchFoodReccomendations(UserID); // Replace the argument with the appropriate data, if needed
+        const exerciseData = await fetchExercise(UserID);
+        fetchExercise(UserID).then(result => setExercises(result));
         const nutrientResult = nutrientData.slice(0,5);
         setTop5Lacking(nutrientResult);
+        setTop5letters("These are the top 5 nutrients to try to eat more of:");
       };
       
   
@@ -204,16 +233,30 @@ function FoodPage () {
                 <Container>
                   <Row xs={1} sm={1} md={1} >
                       <Col>
-                        <button type="button" class="btn btn-primary" onClick={handleGenerateRecommendations}> Generate Reccomendations</button>
+                        <button type="button" class="btn btn-primary" onClick={handleGenerateRecommendations}> Generate Recommendations</button>
                       </Col>
 
                       <Col> 
+                      <h3>{top5letters}</h3>
                       <ul>
                         {top5Lacking.map((nutrient) => (
-                          <li key={nutrient}>{nutrient}</li>
+                          <li style={{margin: 'center'}} key={nutrient}>{nutrient}</li>
                         ))}
                       </ul>
                       </Col>
+                      <div className="container">
+                <h1></h1>
+                {Array.isArray(exercises) ? (
+                    <ul>
+                      Potential Changes to Exercise Level
+                        {exercises.map((exercise, index) => (
+                            <li key={index}>{exercise.name}</li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>{exercises}</p>
+                )}
+            </div>
                   </Row>
           
 
