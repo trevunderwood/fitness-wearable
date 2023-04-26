@@ -2,9 +2,13 @@ import UserNavBar from "../../components/UserNavBar";
 import { Container, Row, Col } from 'react-bootstrap';
 import CircleProgress from "../../components/CircularProgressbar";
 import './styles/foodstyles.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Form} from 'react-bootstrap';
 import { useAuth } from "../../AuthContext";
+import { ref, onValue, off } from "firebase/database";
+import { database } from "../../firebase";
+
+
 
 function FoodPage () {
     const calorieGoal = 2000;
@@ -21,6 +25,39 @@ function FoodPage () {
       setTop5Lacking([]);
     };
 
+
+    // Add this function inside your component
+    const fetchDailyCalorieCount = async () => {
+      
+      const displayResponse = await fetchDisplayCal(currentUser.uid);
+      // console.log("Current UID: ", currentUser.uid);
+      // console.log('Calories: ', displayResponse);
+      
+      
+    setCurrentCalories(displayResponse);
+    };
+
+    const fetchDisplayCal = async (UserID) => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/display-calories/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ UserID }),
+        });
+        const data = await response.json();
+  
+        if (response.ok) {
+          return data.result;
+        } else {
+          throw new Error(data.error);
+        }
+      } catch (error) {
+        console.error('Error displaying calories:', error);
+        alert(error);
+      }
+    };
 
       const fetchCalories = async (food, UserID) => {
         try {
@@ -118,6 +155,13 @@ function FoodPage () {
       const handleInputChange = (event) => {
         setFoodName(event.target.value);
       };
+
+      useEffect(() => {
+        if (currentUser) {
+          fetchDailyCalorieCount();
+        }
+      }, [currentUser]);
+      
 
     return (
         <><UserNavBar></UserNavBar>
