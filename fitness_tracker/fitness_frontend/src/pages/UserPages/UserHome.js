@@ -34,7 +34,7 @@ function UserHome () {
             setCaloriesBurnt(data.DailyCalorieBurned);
             //setCaloricIntake(data.DailyCalorieCount);
              // Cleanup the listener when the component is unmounted
-        console.log("Fetched Date", data.totalSteps);
+        // console.log("Fetched Date", data.totalSteps);
           });
         const listener2 = onValue(nutrientRef, (snapshot)=>{
             const data = snapshot.val();

@@ -30,8 +30,8 @@ function FoodPage () {
     const fetchDailyCalorieCount = async () => {
       
       const displayResponse = await fetchDisplayCal(currentUser.uid);
-      // console.log("Current UID: ", currentUser.uid);
-      // console.log('Calories: ', displayResponse);
+      console.log("Current UID: ", currentUser.uid);
+      console.log('Calories: ', displayResponse);
       
       
     setCurrentCalories(displayResponse);
@@ -46,6 +46,7 @@ function FoodPage () {
           },
           body: JSON.stringify({ UserID }),
         });
+        
         const data = await response.json();
   
         if (response.ok) {
