@@ -10,7 +10,7 @@ import HistoryPage from './pages/UserPages/HIstoryPage';
 import PersonalRegisterPage from './pages/PersonalRegisterPage';
 import EditProfilePage from './pages/UserPages/EditProfilePage';
 import ConnectionPage from './pages/UserPages/ConnectionPage';
-import WorkoutPage from './pages/WorkoutPage';
+import WorkoutPage from './pages/UserPages/WorkoutPage';
 import { AuthProvider } from './AuthContext';
 
 
