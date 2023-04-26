@@ -208,6 +208,7 @@ void run_inference_background()
 void heart_rate_background()
 {
   Serial.println("HR thread started");
+  int i = 0;
   while (1) {
     long irValue = particleSensor.getIR();
 
@@ -243,7 +244,11 @@ void heart_rate_background()
       Serial.print(" No finger?");
 
     Serial.println();
+    // i++;
+    // if (i > 100){
     heartRateChar.writeValue(beatAvg);
+      // i = 0;
+    // }
   }
 }
 
